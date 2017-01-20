@@ -9,7 +9,7 @@ namespace lingvo
     public partial class Captcha : Page
     {
         private const string MAGIC_WORD              = "12qwQW12";
-        private const string ALLOW_CONTINUE_PAGE_URL = "~/Index.html";
+        private const string ALLOW_CONTINUE_PAGE_URL = "~/index.html";
         private AntiBot _AntiBot;
 
         protected void Page_Load( object sender, EventArgs e )
