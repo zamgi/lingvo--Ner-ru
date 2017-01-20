@@ -1,0 +1,41 @@
+﻿span.NER {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+}
+.td-ner {
+    width: 100%; 
+    border-bottom: 1px solid rgb(237, 237, 237);
+    padding-bottom: 5px;
+    text-align: left;
+}
+span.B_NAME, span.I_NAME, span.NAME {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+    color: rgb(167, 40, 40);
+}
+span.B_ORG, span.I_ORG, span.ORG {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+    color: rgb(0, 0, 192);
+}
+span.B_GEO, span.I_GEO, span.GEO {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+    color: rgb(15, 138, 36);
+}
+span.B_ENTR, span.I_ENTR, span.ENTR {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+    color: rgb(185, 69, 181);
+}
+span.B_PROD, span.I_PROD, span.PROD {
+    border-bottom: 1px dotted black;
+    font-weight: bold;
+    color: rgb(255, 162, 0);
+}
+span.O, span.__UNDEFINED__, span.__UNKNOWN__ {
+    border: 1px dotted red;
+    font-weight: bold;
+    color: red;
+}
+
