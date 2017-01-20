@@ -1,0 +1,14 @@
+del "*.suo" /Q
+del "ner_ru.web.demo\bin\*.pdb" /Q
+del "ner_ru.web.demo\*.csproj.user" /Q
+rd "ner_ru.web.demo\obj" /S/Q
+rd "captcha\bin" /S/Q
+rd "captcha\obj" /S/Q
+rd "crfsuite.net\bin" /S/Q
+rd "crfsuite.net\obj" /S/Q
+rd "lingvo.core\bin" /S/Q
+rd "lingvo.core\obj" /S/Q
+rd "ner-crf.net\bin" /S/Q
+rd "ner-crf.net\obj" /S/Q
+rd "SentSplitter\bin" /S/Q
+rd "SentSplitter\obj" /S/Q
