@@ -7,9 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "captcha", "captcha\captcha.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[lib]", "[lib]", "{3CB88523-7F8A-4DE8-8020-7C2B0F54F269}"
 	ProjectSection(SolutionItems) = preProject
-		[lib]\crfsuite_x64.dll = [lib]\crfsuite_x64.dll
-		[lib]\crfsuite_x86.dll = [lib]\crfsuite_x86.dll
-		[lib]\libcrfsuite.so = [lib]\libcrfsuite.so
 		[lib]\Newtonsoft.Json.dll = [lib]\Newtonsoft.Json.dll
 	EndProjectSection
 EndProject
@@ -20,15 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentSplitter", "SentSplitter\SentSplitter.csproj", "{945A3CAA-EF28-4344-8DBB-7EBEB4BE0301}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner-crf.NET", "ner-crf.net\ner-crf.NET.csproj", "{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[resources]", "[resources]", "{0D43BCC7-5BC1-4C42-BF3C-292768050114}"
-	ProjectSection(SolutionItems) = preProject
-		[resources]\crfsuite-tokenizer-resources.xml = [resources]\crfsuite-tokenizer-resources.xml
-		[resources]\model_pa_(minfreq-1)_ru = [resources]\model_pa_(minfreq-1)_ru
-		[resources]\sent-splitter-resources.xml = [resources]\sent-splitter-resources.xml
-		[resources]\templateNER.txt = [resources]\templateNER.txt
-		[resources]\url-detector-resources.xml = [resources]\url-detector-resources.xml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

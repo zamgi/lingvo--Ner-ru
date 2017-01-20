@@ -61,24 +61,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\[lib]\crfsuite_x64.dll">
-      <Link>bin\crfsuite_x64.dll</Link>
-    </Content>
-    <Content Include="..\[lib]\crfsuite_x86.dll">
-      <Link>bin\crfsuite_x86.dll</Link>
-    </Content>
-    <Content Include="..\[resources]\crfsuite-tokenizer-resources.xml">
-      <Link>[resources]\crfsuite-tokenizer-resources.xml</Link>
-    </Content>
-    <Content Include="..\[resources]\sent-splitter-resources.xml">
-      <Link>[resources]\sent-splitter-resources.xml</Link>
-    </Content>
-    <Content Include="..\[resources]\templateNER.txt">
-      <Link>[resources]\templateNER.txt</Link>
-    </Content>
-    <Content Include="..\[resources]\url-detector-resources.xml">
-      <Link>[resources]\url-detector-resources.xml</Link>
-    </Content>
+    <Content Include="bin\crfsuite_x64.dll" />
+    <Content Include="bin\crfsuite_x86.dll" />
     <Content Include="Captcha.aspx" />
     <Content Include="rc\css\ner.css" />
     <Content Include="rc\css\style.css" />
@@ -95,6 +79,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="[resources]\crfsuite-tokenizer-resources.xml" />
+    <Content Include="[resources]\sent-splitter-resources.xml" />
+    <Content Include="[resources]\templateNER.txt" />
+    <Content Include="[resources]\url-detector-resources.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntiBotHelper.cs" />
@@ -136,11 +124,11 @@
     <Content Include="CaptchaImageHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\[resources]\model_pa_%28minfreq-1%29_ru">
-      <Link>[resources]\model_pa_%28minfreq-1%29_ru</Link>
-    </Content>
+    <Content Include="[resources]\model_pa_%28minfreq-1%29_ru" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="bin\libcrfsuite.so" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
