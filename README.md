@@ -1,6 +1,6 @@
 ﻿# lingvo--Ner-ru
 
-<!-- <a target="_blank" href="http://ner-ru.apphb.com/index.html">[ live demo ]</a> -->
+<a target="_blank" href="http://ner-ru.apphb.com/index.html">[ live demo ]</a>
 
 <div style="padding: 20px">
     <div>
