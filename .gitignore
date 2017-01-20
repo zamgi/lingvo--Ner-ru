@@ -47,3 +47,10 @@ Temporary Items
 .apdisk
 
 *.suo
+ner_ru.web.demo/bin/captcha.dll
+ner_ru.web.demo/bin/lingvo.core.dll
+ner_ru.web.demo/bin/Newtonsoft.Json.dll
+ner_ru.web.demo/bin/crfsuite.net.dll
+ner_ru.web.demo/bin/SentSplitter.dll
+ner_ru.web.demo/bin/ner_ru.web.demo.dll
+ner_ru.web.demo/bin/ner-crf.net.dll
