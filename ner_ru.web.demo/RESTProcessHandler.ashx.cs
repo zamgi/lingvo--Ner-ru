@@ -165,7 +165,7 @@ namespace lingvo.ner
                 _Context = context;
             }
 
-            private ConcurrentFactory _ConcurrentFactory
+            /*private ConcurrentFactory _ConcurrentFactory
             {
                 get { return ((ConcurrentFactory) _Context.Cache[ "_ConcurrentFactory" ]); }
                 set
@@ -174,7 +174,9 @@ namespace lingvo.ner
                     if ( value != null )
                         _Context.Cache[ "_ConcurrentFactory" ] = value;
                 }
-            }
+            }*/
+
+            private static ConcurrentFactory _ConcurrentFactory;
 
             public ConcurrentFactory GetConcurrentFactory()
             {
@@ -229,7 +231,7 @@ namespace lingvo.ner
 
                 var text          = context.GetRequestStringParam( "text", Config.MAX_INPUTTEXT_LENGTH );
                 var splitBySmiles = context.Request[ "splitBySmiles" ].Try2Boolean( true );
-                var html          = context.Request[ "html" ].Try2Boolean( false );                
+                var html          = context.Request[ "html"          ].Try2Boolean( false );                
 
                 #region [.anti-bot.]
                 antiBot.MarkRequestEx( text );
@@ -250,12 +252,10 @@ namespace lingvo.ner
         {
             if ( html )
             {
-                context.Response.ContentType = "application/html";
                 SendJsonResponse( context, new result_html( words, originalText ) );
             }
             else
             {
-                context.Response.ContentType = "application/json";
                 SendJsonResponse( context, new result_json( words ) );
             }
         }

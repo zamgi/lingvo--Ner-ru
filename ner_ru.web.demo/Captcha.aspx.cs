@@ -6,6 +6,9 @@ using captcha;
 
 namespace lingvo
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class Captcha : Page
     {
         private const string MAGIC_WORD              = "12qwQW12";

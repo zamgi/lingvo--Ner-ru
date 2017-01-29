@@ -9,7 +9,7 @@ namespace lingvo.ner
     /// <summary>
     /// 
     /// </summary>
-	internal class ConcurrentFactory
+	internal sealed class ConcurrentFactory
 	{
 		private readonly Semaphore                       _Semaphore;
         private readonly ConcurrentStack< NerProcessor > _Stack;
