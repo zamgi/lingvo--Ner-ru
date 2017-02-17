@@ -1,3 +1,10 @@
 /bin/*.pdb
+/bin/captcha.dll
+/bin/lingvo.core.dll
+/bin/Newtonsoft.Json.dll
+/bin/crfsuite.net.dll
+/bin/SentSplitter.dll
+/bin/ner-crf.net.dll
+/bin/ner_ru.web.demo.dll
 /obj/*
 *.csproj.user
