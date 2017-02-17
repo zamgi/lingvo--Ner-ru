@@ -14,7 +14,7 @@
             <span>В приведенном демо представлена классификация именованных сущностей на пять типов:</span>
             <br />
             <ul style="margin-left: 30px">
-                <li>1. физические лица (ФИО или любая составляющая ФИО, например, <span style="border-bottom: 1px dotted black; font-weight: bold; color: rgb(167, 40, 40);" title="Физ. лица">Владимир</span> <span style="border-bottom: 1px dotted black; font-weight: bold; color: rgb(167, 40, 40);" title="Физ. лица">Петров</span>)</li>
+                <li>1. физические лица (ФИО или любая составляющая ФИО, например, <span class="B_NAME" title="Физ. лица">Владимир</span> <span class="I_NAME" title="Физ. лица">Петров</span>)</li>
                 <li>2. юридически лица (названия компаний, сообществ, союзов и т.п., например, ЗАО «<span class="B_ORG" title="Юр. лица">МТС Северо-Запад</span>»)</li>
                 <li>3. географические названия, например, <span class="B_GEO" title="Географические объекты">Париж</span></li>
                 <li>4. продукты (названия продуктов, их марок, в том числе брендов, например, <span class="B_PROD" title="Торговые марки/Продукты">iPhone</span>)</li>
