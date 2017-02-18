@@ -1,6 +1,6 @@
-del "*.suo" /Q/A
+del "*.suo" /S/Q/F/A
+del "*.csproj.user" /S/Q/F/A
 del "ner_ru.web.demo\bin\*.pdb" /Q
-del "ner_ru.web.demo\*.csproj.user" /Q
 rd "ner_ru.web.demo\obj" /S/Q
 rd "captcha\bin" /S/Q
 rd "captcha\obj" /S/Q
