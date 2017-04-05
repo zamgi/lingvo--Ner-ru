@@ -8,7 +8,7 @@ using lingvo.core;
 using lingvo.urls;
 
 namespace lingvo.sentsplitting
-{    
+{
     using SentCharType = SentSplitterModel.SentCharType;
 
     /// <summary>
@@ -246,7 +246,7 @@ namespace lingvo.sentsplitting
         private List< url_struct_t >           _Urls;
         private int                            _UrlIndex;
         private char*                          _EndUrlPtr;
-        private ProcessSentCallbackDelegate    _ProcessSentCallback;
+        private ProcessSentCallbackDelegate    _OuterProcessSentCallback_Delegate;
         #endregion
 
         public bool SplitBySmiles
@@ -255,16 +255,17 @@ namespace lingvo.sentsplitting
             set { _SplitBySmiles = value;  }
         }
 
+        #region [.ctor().]
         public SentSplitter( SentSplitterConfig config )
         {
-            _Model          = config.Model;
-            _SplitBySmiles  = config.SplitBySmiles;
-            _UrlDetector    = new UrlDetector( config.UrlDetectorConfig );
+            _Model         = config.Model;
+            _SplitBySmiles = config.SplitBySmiles;
+            _UrlDetector   = new UrlDetector( config.UrlDetectorConfig );
 
-            _Sents          = new List< sent_t >( DEFAULT_LIST_CAPACITY );            
-            _StringBuilder  = new StringBuilder();
-            _Sent           = new sent_t();
-            _Sentstructs    = new List< sent_struct_t >( DEFAULT_LIST_CAPACITY );
+            _Sents         = new List< sent_t >( DEFAULT_LIST_CAPACITY );            
+            _StringBuilder = new StringBuilder();
+            _Sent          = new sent_t();
+            _Sentstructs   = new List< sent_struct_t >( DEFAULT_LIST_CAPACITY );
 
             _NgramMaxLength2Left  = NGRAM_MIN_LENGTH_2_LEFT;
             _NgramMaxLength2Right = _Model.GetNgramMaxLength() - 1;
@@ -297,12 +298,13 @@ namespace lingvo.sentsplitting
                 _BufferPtrBase = null;
             }
         }
+        #endregion
 
         public delegate void ProcessSentCallbackDelegate( sent_t sent );
 
         public void AllocateSents( string text, ProcessSentCallbackDelegate processSentCallback )
         {
-            _ProcessSentCallback = processSentCallback;
+            _OuterProcessSentCallback_Delegate = processSentCallback;
 
             _Sent.SetAsFirst();
             _OpenBrakets = 0;
@@ -561,7 +563,7 @@ namespace lingvo.sentsplitting
                 SetLastSentAndCallback( text.Length );
             }
 
-            _ProcessSentCallback = null;
+            _OuterProcessSentCallback_Delegate = null;
         }
         public List< sent_t > AllocateSents( string text, bool splitBySmiles )
         {
@@ -958,7 +960,7 @@ var xxx = new string( _BASE, _Sent.startIndex, _Sent.length );
 #endif
             if ( !IsCurrentSentContainsPunctuationOrWhitespace() )
             {
-                _ProcessSentCallback( _Sent );
+                _OuterProcessSentCallback_Delegate( _Sent );
             }
             _Sent.Reset( _Sent.startIndex + _Sent.length );
 
@@ -979,7 +981,7 @@ var xxx = new string( _BASE, _Sent.startIndex, _Sent.length );
 #endif
             if ( !IsCurrentSentContainsPunctuationOrWhitespace() )
             {
-                _ProcessSentCallback( _Sent );
+                _OuterProcessSentCallback_Delegate( _Sent );
             }
 
             //_Sent = sent;

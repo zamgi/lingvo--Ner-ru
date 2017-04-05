@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using lingvo.core;
 
 namespace lingvo.urls
-{    
+{
     /// <summary>
     /// 
     /// </summary>
@@ -182,6 +182,7 @@ namespace lingvo.urls
         private char*                         _Ptr;  //current pointer into text
         #endregion
 
+        #region [.ctor().]
         public UrlDetector( UrlDetectorConfig config )
         {
             _ExtractValue = (config.UrlExtractMode == UrlExtractModeEnum.ValueAndPosition);
@@ -235,6 +236,7 @@ namespace lingvo.urls
                 _UriSchBufferPtrBase = null;
             }
         }
+        #endregion
 
         unsafe public List< url_t > AllocateUrls( string text )
         {
@@ -797,7 +799,7 @@ var xxx = new string( left_ptr - 25, 0, 75 );
 }
 
 namespace lingvo.urls
-{   
+{
     /// <summary>
     /// 
     /// </summary>

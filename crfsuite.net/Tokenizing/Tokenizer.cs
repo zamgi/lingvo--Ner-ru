@@ -244,7 +244,7 @@ namespace lingvo.tokenizing
         private char*                                 _Ptr;        
         private int                                   _StartIndex;
         private int                                   _Length;
-        private ProcessSentCallbackDelegate           _ProcessSentCallback;
+        private ProcessSentCallbackDelegate           _OuterProcessSentCallback_Delegate;
         private char*                                 _StartPtr;
         private char*                                 _EndPtr;
         //private char[]                                _WordToUpperBuffer;
@@ -252,6 +252,7 @@ namespace lingvo.tokenizing
         private GCHandle                              _WordToUpperBufferGCHandle;
         private char*                                 _WordToUpperBufferPtrBase;
         private bool                                  _NotSkipNonLetterAndNonDigitToTheEnd; //need for NER-model-builder
+        private SentSplitter.ProcessSentCallbackDelegate _SentSplitterProcessSentCallback_Delegate;
         #endregion
 
         #region [.ctor().]
@@ -260,6 +261,7 @@ namespace lingvo.tokenizing
             _SentSplitter          = new SentSplitter( config.SentSplitterConfig );
             _Words                 = new List< word_t >( DEFAULT_WORDSLIST_CAPACITY );
             _ParticleThatExclusion = config.Model.ParticleThatExclusion;
+            _SentSplitterProcessSentCallback_Delegate = new SentSplitter.ProcessSentCallbackDelegate( SentSplitterProcessSentCallback );
 
             _UIM  = xlat_Unsafe.Inst._UPPER_INVARIANT_MAP;
             _CTM  = xlat_Unsafe.Inst._CHARTYPE_MAP;
@@ -321,22 +323,22 @@ namespace lingvo.tokenizing
 
         public delegate void ProcessSentCallbackDelegate( List< word_t > words );
 
-        public void run( string text, bool splitBySmiles, ProcessSentCallbackDelegate processSentCallback )
+        public void Run( string text, bool splitBySmiles, ProcessSentCallbackDelegate processSentCallback )
         {
-            _ProcessSentCallback = processSentCallback;
+            _OuterProcessSentCallback_Delegate = processSentCallback;
 
             fixed ( char* _base = text )
             {
                 _BASE = _base;
 
                 _SentSplitter.SplitBySmiles = splitBySmiles;
-                _SentSplitter.AllocateSents( text, ProcessSentSplitterCallback );
+                _SentSplitter.AllocateSents( text, _SentSplitterProcessSentCallback_Delegate );
             }
 
-            _ProcessSentCallback = null;
+            _OuterProcessSentCallback_Delegate = null;
         }
 
-        private void ProcessSentSplitterCallback( sent_t sent )
+        private void SentSplitterProcessSentCallback( sent_t sent )
         {
             _Words.Clear();
             _StartIndex = sent.startIndex;
@@ -573,7 +575,7 @@ namespace lingvo.tokenizing
             TryCreateWordAndPut2List();
             #endregion
             
-            _ProcessSentCallback( _Words );
+            _OuterProcessSentCallback_Delegate( _Words );
         }
 
         private void TryCreateWordAndPut2List()
@@ -959,7 +961,7 @@ namespace lingvo.tokenizing
                 _BuildModelNerInputTypeB = nerOutputType.ToBuildModelNerInputTypeB();
             }
 
-            _ProcessSentCallback = ProcessSentCallbackModelBuilder;
+            _OuterProcessSentCallback_Delegate = ProcessSentCallbackModelBuilder;
 
             fixed ( char* _base = partOfSentText )            
             {
@@ -969,12 +971,12 @@ namespace lingvo.tokenizing
                 var urls = _UrlDetector.AllocateUrls( partOfSentText );
                 _BuildModelSent.Set4ModelBuilder( 0, partOfSentText.Length, (0 < urls.Count) ? urls : null );
 
-                ProcessSentSplitterCallback( _BuildModelSent );
+                SentSplitterProcessSentCallback( _BuildModelSent );
 
                 _NotSkipNonLetterAndNonDigitToTheEnd = false;
             }
 
-            _ProcessSentCallback = null;
+            _OuterProcessSentCallback_Delegate = null;
 
             return (_BuildModelWords);
         }

@@ -3,8 +3,6 @@
  * For more information visit
  *		- http://www.cs.uku.fi/~kilpelai/BSA05/lectures/slides04.pdf
  */
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 

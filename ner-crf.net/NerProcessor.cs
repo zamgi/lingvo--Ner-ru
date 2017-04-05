@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 using lingvo.core;
-using lingvo.sentsplitting;
 using lingvo.tokenizing;
 
 namespace lingvo.ner
@@ -19,7 +16,9 @@ namespace lingvo.ner
         private readonly Tokenizer                    _Tokenizer;
         private readonly List< word_t >               _Words;
 		private readonly NerScriber                   _NerScriber;
-        private Tokenizer.ProcessSentCallbackDelegate _ProcessSentCallback;
+        private Tokenizer.ProcessSentCallbackDelegate _ProcessSentCallback_1_Delegate;
+        private Tokenizer.ProcessSentCallbackDelegate _ProcessSentCallback_2_Delegate;
+        private Tokenizer.ProcessSentCallbackDelegate _OuterProcessSentCallback_Delegate;
         #endregion
 
         #region [.ctor().]
@@ -30,7 +29,9 @@ namespace lingvo.ner
             _NerScriber = NerScriber.Create( config.ModelFilename, config.TemplateFilename );
             _Tokenizer  = new Tokenizer( config.TokenizerConfig );
             _Words      = new List< word_t >( DEFAULT_WORDSLIST_CAPACITY );
-		}
+            _ProcessSentCallback_1_Delegate = new Tokenizer.ProcessSentCallbackDelegate( ProcessSentCallback_1 );
+            _ProcessSentCallback_2_Delegate = new Tokenizer.ProcessSentCallbackDelegate( ProcessSentCallback_2 );
+        }
 
         public void Dispose()
         {
@@ -42,11 +43,11 @@ namespace lingvo.ner
         {
             _Words.Clear();
 
-            _Tokenizer.run( text, splitBySmiles, ProcessSentCallback );
+            _Tokenizer.Run( text, splitBySmiles, _ProcessSentCallback_1_Delegate );
 
             return (_Words);
         }
-        private void ProcessSentCallback( List< word_t > words )
+        private void ProcessSentCallback_1( List< word_t > words )
         {
             _NerScriber.Run( words );
 
@@ -78,13 +79,13 @@ namespace lingvo.ner
 
         public void Run( string text, bool splitBySmiles, Tokenizer.ProcessSentCallbackDelegate processSentCallback )
         {
-            _ProcessSentCallback = processSentCallback;
+            _OuterProcessSentCallback_Delegate = processSentCallback;
 
-            _Tokenizer.run( text, splitBySmiles, ProcessSentCallback_Callback );
+            _Tokenizer.Run( text, splitBySmiles, _ProcessSentCallback_2_Delegate );
 
-            _ProcessSentCallback = null;
+            _OuterProcessSentCallback_Delegate = null;
         }
-        private void ProcessSentCallback_Callback( List< word_t > words )
+        private void ProcessSentCallback_2( List< word_t > words )
         {
             _NerScriber.Run( words );            
 
@@ -101,7 +102,7 @@ namespace lingvo.ner
                     }
                 }
                 #region [.callback result.]
-                _ProcessSentCallback( _Words );
+                _OuterProcessSentCallback_Delegate( _Words );
                 #endregion
                 return;
             }
@@ -119,7 +120,7 @@ namespace lingvo.ner
             }
 
             #region [.callback result.]
-            _ProcessSentCallback( _Words );
+            _OuterProcessSentCallback_Delegate( _Words );
             #endregion
         }
 
@@ -127,7 +128,7 @@ namespace lingvo.ner
         {
             var wordsBySents = new List< word_t[] >();
 
-            _Tokenizer.run( text, splitBySmiles, (words) =>
+            _Tokenizer.Run( text, splitBySmiles, (words) =>
             {
                 _NerScriber.Run( words );
 
