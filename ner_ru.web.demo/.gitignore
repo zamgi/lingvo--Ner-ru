@@ -7,4 +7,5 @@
 /bin/ner-crf.net.dll
 /bin/ner_ru.web.demo.dll
 /obj/*
+/(logs)/*
 *.csproj.user
