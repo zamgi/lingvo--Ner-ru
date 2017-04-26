@@ -25,11 +25,12 @@
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\[lib]\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\[lib]\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -85,7 +89,10 @@
     <Content Include="[resources]\url-detector-resources.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntiBotHelper.cs" />
+    <Compile Include="App_Code\AntiBotHelper.cs" />
+    <Compile Include="App_Code\Extensions.cs" />
+    <Compile Include="App_Code\Config.cs" />
+    <Compile Include="App_Code\Log.cs" />
     <Compile Include="Captcha.aspx.cs">
       <DependentUpon>Captcha.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -93,7 +100,7 @@
     <Compile Include="Captcha.aspx.designer.cs">
       <DependentUpon>Captcha.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ConcurrentFactory.cs" />
+    <Compile Include="App_Code\ConcurrentFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RESTProcessHandler.ashx.cs">
       <DependentUpon>RESTProcessHandler.ashx</DependentUpon>
@@ -147,11 +154,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1176</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ner_ru</IISUrl>
+          <IISUrl>http://localhost:1179/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

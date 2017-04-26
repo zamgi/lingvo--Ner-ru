@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 
 using captcha;
 
@@ -12,8 +9,8 @@ namespace lingvo
     /// </summary>
     internal static class AntiBotHelper
     {
-        private const string CAPTCHA_PAGE_URL      = "~/Captcha.aspx";
-        private const string LOAD_MODEL_DUMMY_TEXT = "_dummy_";
+        internal const string LOAD_MODEL_DUMMY_TEXT = "_dummy_";
+        private  const string CAPTCHA_PAGE_URL      = "~/Captcha.aspx";        
 
         public static AntiBot ToAntiBot( this HttpContext httpContext )
         {

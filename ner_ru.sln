@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner_ru.web.demo", "ner_ru.web.demo\ner_ru.web.demo.csproj", "{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "captcha", "captcha\captcha.csproj", "{ADA45B0D-9218-4E16-880D-825D022A5684}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[lib]", "[lib]", "{3CB88523-7F8A-4DE8-8020-7C2B0F54F269}"
 	ProjectSection(SolutionItems) = preProject
+		[lib]\log4net.dll = [lib]\log4net.dll
 		[lib]\Newtonsoft.Json.dll = [lib]\Newtonsoft.Json.dll
 	EndProjectSection
 EndProject
