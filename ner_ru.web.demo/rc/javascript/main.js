@@ -51,8 +51,14 @@ $(document).ready(function () {
         if (!text || !text.length) {
             text = DEFAULT_TEXT;
         }
-        $('#text').text(text).focus();
+        $('#text').val(text).focus();
     })();
+    $('#resetText2Default').click(function () {
+        $("#text").val('');
+        setTimeout(function () {
+            $("#text").val(DEFAULT_TEXT).focus();
+        }, 100);
+    });
 
     $('#mainPageContent').on('click', '#processButton', function () {
         if($(this).hasClass('disabled')) return (false);

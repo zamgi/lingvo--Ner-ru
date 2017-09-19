@@ -131,14 +131,19 @@ namespace lingvo.tokenizing
             private UnsafeConst( LanguageTypeEnum languageType )
             {
                 //-1-//
-                var CRF_CHARTYPE_MAP = new byte/*CRFCharType*/[ char.MaxValue ];
+                var CRF_CHARTYPE_MAP = new byte/*CRFCharType*/[ char.MaxValue + 1 ];
                 fixed ( /*CRFCharType*/byte* cctm = CRF_CHARTYPE_MAP )        
                 {
-                    for ( var c = char.MinValue; c < char.MaxValue; c++ )
+                    for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
                     {
                         if ( /*char.IsWhiteSpace( c ) ||*/ char.IsPunctuation( c ) )
                         {
                             *(cctm + c) = (byte) CRFCharType.InterpreteAsWhitespace;
+                        }
+
+                        if ( c == char.MaxValue )
+                        {
+                            break;
                         }
                     }
 

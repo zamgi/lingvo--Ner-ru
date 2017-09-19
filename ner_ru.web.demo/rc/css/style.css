@@ -151,7 +151,7 @@ h2.h-head { font-size:18px; background:#E6E6E6 url("../images/bg-h2.gif") repeat
 #periodsHeader {padding-right: 7px; border-bottom: 1px dashed #CDCDCD;}
 .description-header {font-size: 0.8em; float:right;}
 .line {margin-top: 3px; border-bottom: 1px dashed #CDCDCD;}
-#text {padding: 5px; resize: none;}
+#text {padding: 5px; resize: none; border-radius: 3px;}
 #text.no-change {background-color: #eee;}
 .result-info {width: 630px; min-height: 20px; margin: 10px auto; text-align: center; color: #313131;}
 .result-info.error {color: #f00;}
@@ -163,7 +163,19 @@ h2.h-head { font-size:18px; background:#E6E6E6 url("../images/bg-h2.gif") repeat
 ul.main-link-list { list-style: square; }
 ul.main-link-list li { margin-bottom: 10px; }
 
-
+#resetText2Default {
+    float: right;
+    font-weight: bold;
+    font-size: small;
+    font-family: monospace;
+    border: 1px silver solid;
+    border-radius: 3px;
+    padding: 0 5px 1px 4px;
+    cursor: pointer;
+}
+    #resetText2Default:hover {
+        border-color: darkgray;
+    }
 /* Let's get this party started */
 #descriptionDiv::-webkit-scrollbar {
     width: 8px;
@@ -176,13 +188,13 @@ ul.main-link-list li { margin-bottom: 10px; }
 /* Track */
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     background: #ccc/*rgba(255,0,0,0.8)*/; 
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }

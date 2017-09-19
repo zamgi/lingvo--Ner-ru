@@ -324,8 +324,8 @@ namespace lingvo.sentsplitting
             ngram_t< before_no_proper_t >[]        beforeNoProper,
             ngram_t< before_proper_or_number_t >[] beforeProperOrNumber )
         {
-            //---SENTCHARTYPE_MAP = new SentCharType[ char.MaxValue ];
-            var SENTCHARTYPE_MAP = new byte[ char.MaxValue ];
+            //---SENTCHARTYPE_MAP = new SentCharType[ char.MaxValue + 1 ];
+            var SENTCHARTYPE_MAP = new byte[ char.MaxValue + 1 ];
 
             //-smile's-
             foreach ( var c in smiles.Values.Keys.Select( k => k[ 0 ] ) )
@@ -350,7 +350,7 @@ namespace lingvo.sentsplitting
             SENTCHARTYPE_MAP[ ';' ] |= (byte) SentCharType.AfterThreeDotAllowedPunctuation;
             SENTCHARTYPE_MAP[ ':' ] |= (byte) SentCharType.AfterThreeDotAllowedPunctuation | (byte) SentCharType.AfterBracketAllowedPunctuation4QMEP;
             SENTCHARTYPE_MAP[ ',' ] |= (byte) SentCharType.AfterThreeDotAllowedPunctuation | (byte) SentCharType.AfterBracketAllowedPunctuation4QMEP;
-            for ( var c = char.MinValue; c < char.MaxValue; c++ )
+            for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
             {
                 var ct = xlat.CHARTYPE_MAP[ c ];
                 if ( (ct & CharType.IsHyphen) == CharType.IsHyphen )  //if ( xlat.IsHyphen( c ) )
@@ -363,6 +363,10 @@ namespace lingvo.sentsplitting
                     SENTCHARTYPE_MAP[ c ] |= (byte) SentCharType.AfterThreeDotAllowedPunctuation;
                 }
 
+                if ( c == char.MaxValue )
+                {
+                    break;
+                }
             }
 
             //roman-digit

@@ -30,7 +30,7 @@ namespace ner
         #region [.static .ctor() & xlat table's.]
         private static readonly char*         MAX_PTR                          = (char*) (0xffffffffFFFFFFFF);
         private const int                     DEFAULT_WORDSLIST_CAPACITY       = 100;
-        private static readonly NERCharType[] NER_CHARTYPE_MAP                 = new NERCharType[ char.MaxValue ];
+        private static readonly NERCharType[] NER_CHARTYPE_MAP                 = new NERCharType[ char.MaxValue + 1 ];
         private const string                  INCLUDE_INTERPRETE_AS_WHITESPACE = "¥©¤¦§®¶€™<>";
         private const char                    DOT                              = '\u002E'; /* 0x2E, 46, '.' */
         private static readonly char[]        BETWEEN_LETTER_OR_DIGIT          = new char[] { 
@@ -98,11 +98,16 @@ namespace ner
         {
             fixed ( NERCharType* nctm = NER_CHARTYPE_MAP )        
             {
-                for ( var c = char.MinValue; c < char.MaxValue; c++ )
+                for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
                 {
                     if ( /*char.IsWhiteSpace( c ) ||*/ char.IsPunctuation( c ) )
                     {
                         *(nctm + c) = NERCharType.InterpreteAsWhitespace;
+                    }
+
+                    if ( c == char.MaxValue )
+                    {
+                        break;
                     }
                 }
 
