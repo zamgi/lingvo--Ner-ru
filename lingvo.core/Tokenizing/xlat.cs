@@ -84,7 +84,7 @@ namespace lingvo.core
         static xlat()
         {            
 #if XLAT_CHARTYPE_MAP
-            for ( var c = char.MinValue; c <= char.MaxValue; c++ )
+            for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
             {
                 if ( char.IsUpper( c ) )
                     CHARTYPE_MAP[ c ] |= CharType.IsUpper;
@@ -156,7 +156,7 @@ namespace lingvo.core
 
 #if XLAT_UPPER_INVARIANT_MAP
             char c2;
-            for ( var c = char.MinValue; c <= char.MaxValue; c++ )
+            for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
             {
                 switch ( c )
                 {
@@ -184,7 +184,7 @@ namespace lingvo.core
 
 #if XLAT_WHITESPACE_CHARS
             var wsc = new List< char >();
-            for ( var c = char.MinValue; c <= char.MaxValue; c++ )
+            for ( var c = char.MinValue; /*c <= char.MaxValue*/; c++ )
             {
                 if ( char.IsWhiteSpace( c ) )
                     wsc.Add( c );
@@ -315,7 +315,7 @@ namespace lingvo.core
         public static char[] Create_LOWER_INVARIANT_MAP()
         {
             var lower_invariant_map = new char[ char.MaxValue + 1 ];
-            for ( char ch = char.MinValue, ch2; ch <= char.MaxValue; ch++ )
+            for ( char ch = char.MinValue, ch2; /*ch <= char.MaxValue*/; ch++ )
             {
                 switch ( ch )
                 {
