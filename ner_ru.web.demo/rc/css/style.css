@@ -54,6 +54,7 @@ h2.h-head { font-size:18px; background:#E6E6E6; line-height:30px; padding-left:7
 .description-header {font-size: 0.8em; float:right;}
 #text {padding: 5px 15px; resize: none; border: 1px solid silver; border-radius: 3px; width: 920px;}
 .result-info {width: 630px; min-height: 20px; margin: 10px auto; text-align: center; color: #313131;}
+.result-info.error {color: #f00;}
 #processResult table { width: 100%; margin: 0 auto;}
 #processResult table td { padding: 1px 0; border: 1px solid #aaa; text-align: left; }
 #processResult table th { border: 1px solid #aaa; background-color: wheat; }
