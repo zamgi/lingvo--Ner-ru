@@ -70,12 +70,6 @@
     <Content Include="Captcha.aspx" />
     <Content Include="rc\css\ner.css" />
     <Content Include="rc\css\style.css" />
-    <Content Include="rc\images\bg-btn.gif" />
-    <Content Include="rc\images\bg-h2.gif" />
-    <Content Include="rc\images\bg_body.gif" />
-    <Content Include="rc\images\bg_html.png" />
-    <Content Include="rc\images\bg_html_rl.png" />
-    <Content Include="rc\images\btn_bg.gif" />
     <Content Include="rc\javascript\jquery-1.9.1.js" />
     <Content Include="rc\javascript\main.js" />
     <Content Include="index.html" />
