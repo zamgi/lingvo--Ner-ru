@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
+using Newtonsoft.Json;
 using lingvo.sentsplitting;
 using lingvo.tokenizing;
-using Newtonsoft.Json;
 
 namespace lingvo.ner
 {

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentSplitter", "SentSplitte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner-crf.NET", "ner-crf.net\ner-crf.NET.csproj", "{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner_ru.console.demo", "ner_ru.console.demo\ner_ru.console.demo.csproj", "{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

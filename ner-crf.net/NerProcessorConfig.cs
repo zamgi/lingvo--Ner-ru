@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-using lingvo.core;
-using lingvo.sentsplitting;
+﻿using lingvo.sentsplitting;
 using lingvo.tokenizing;
 using lingvo.urls;
 
