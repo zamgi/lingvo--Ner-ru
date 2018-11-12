@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,22 +8,14 @@ namespace lingvo.sentsplitting
     /// </summary>
     internal struct ngram_t< TValue >
     {
-        public ngram_t( string[] _words, TValue _value ) : this()
+        public ngram_t( string[] _words, TValue _value )
         {
             words = _words;
             value = _value;
         }
 
-        public string[] words
-        {
-            get;
-            private set;
-        }
-        public TValue   value
-        {
-            get;
-            private set;
-        }
+        public string[] words { get; private set; }
+        public TValue   value { get; private set; }
 
         public override string ToString()
         {
@@ -38,37 +28,25 @@ namespace lingvo.sentsplitting
     /// </summary>
     internal struct SearchResult< TValue >
     {
-        public SearchResult( int startIndex, int length, TValue value ) : this()
+        public SearchResult( int startIndex, int length, TValue value )
         {
             StartIndex = startIndex;
             Length     = length;
             v          = value;
         }
 
-        public int    StartIndex
-        {
-            get;
-            private set;
-        }
-        public int    Length
-        {
-            get;
-            private set;
-        }
-        public TValue v
-        {
-            get;
-            private set;
-        }
+        public int    StartIndex { get; private set; }
+        public int    Length     { get; private set; }
+        public TValue v          { get; private set; }
 
         public override string ToString()
         {
-            var _v = v.ToString();
-            if ( string.IsNullOrEmpty( _v ) )
+            var s = v.ToString();
+            if ( string.IsNullOrEmpty( s ) )
             {
                 return ("[" + StartIndex + ":" + Length + "]");
             }
-            return ("[" + StartIndex + ":" + Length + "], value: '" + _v + "'");
+            return ("[" + StartIndex + ":" + Length + "], value: '" + s + "'");
         }
     }
 
@@ -77,56 +55,42 @@ namespace lingvo.sentsplitting
     /// </summary>
     internal struct SearchResultOfHead2Left< TValue >
     {
-        public SearchResultOfHead2Left( ss_word_t lastWord, int length, TValue value ) : this()
+        public SearchResultOfHead2Left( ss_word_t lastWord, int length, TValue value )
         {
             LastWord = lastWord;
             Length   = length;
             v        = value;
         }
 
-        public ss_word_t LastWord
-        {
-            get;
-            private set;
-        }
-        public int    Length
-        {
-            get;
-            private set;
-        }
-        public TValue v
-        {
-            get;
-            private set;
-        }
+        public ss_word_t LastWord { get; private set; }
+        public int       Length   { get; private set; }
+        public TValue    v        { get; private set; }
 
         public override string ToString()
         {
-            var _v = v.ToString();
-            if ( string.IsNullOrEmpty( _v ) )
+            var s = v.ToString();
+            if ( string.IsNullOrEmpty( s ) )
             {
                 return ("[0:" + Length + "]");
             }
-            return ("[0:" + Length + "], value: '" + _v + "'");
+            return ("[0:" + Length + "], value: '" + s + "'");
         }
     }
 
     /// <summary>
-    /// Class for searching string for one or multiple 
-    /// keywords using efficient Aho-Corasick search algorithm
+    /// Class for searching string for one or multiple keywords using efficient Aho-Corasick search algorithm
     /// </summary>
     internal sealed class AhoCorasick< TValue >
     {
         /// <summary>
-        /// Tree node representing character and its 
-        /// transition and failure function
+        /// Tree node representing character and its transition and failure function
         /// </summary>
         private sealed class TreeNode
         {
             /// <summary>
             /// 
             /// </summary>
-            private class ngram_t_IEqualityComparer : IEqualityComparer< ngram_t< TValue > >
+            private sealed class ngram_t_IEqualityComparer : IEqualityComparer< ngram_t< TValue > >
             {
                 public static readonly ngram_t_IEqualityComparer Instance = new ngram_t_IEqualityComparer();
                 private ngram_t_IEqualityComparer() { }
@@ -162,15 +126,11 @@ namespace lingvo.sentsplitting
             /// Initialize tree node with specified character
             /// </summary>
             /// <param name="parent">Parent node</param>
-            /// <param name="c">Character</param>
+            /// <param name="word">word</param>
             public TreeNode( TreeNode parent, string word )
             {
-                Word    = word;
-                Parent  = parent;
-                Ngrams = new HashSet< ngram_t< TValue > >( ngram_t_IEqualityComparer.Instance );
-
-                Transitions      = new TreeNode[ 0 ];
-                _TransDictionary = new Dictionary< string, TreeNode >();
+                Word   = word;
+                Parent = parent;                
             }
 
             /// <summary>
@@ -179,7 +139,11 @@ namespace lingvo.sentsplitting
             /// <param name="ngram">Pattern</param>
             public void AddNgram( ngram_t< TValue > ngram )
             {
-                Ngrams.Add( ngram );
+                if ( _Ngrams == null )
+                {
+                    _Ngrams = new HashSet< ngram_t< TValue > >( ngram_t_IEqualityComparer.Instance );
+                }
+                _Ngrams.Add( ngram );
             }
 
             /// <summary>
@@ -188,21 +152,22 @@ namespace lingvo.sentsplitting
             /// <param name="node">Node</param>
             public void AddTransition( TreeNode node )
             {
-                _TransDictionary.Add( node.Word, node );
-                var nodes = new TreeNode[ _TransDictionary.Values.Count ];
-                _TransDictionary.Values.CopyTo( nodes, 0 );
-                Transitions = nodes;
+                if ( _TransDict == null )
+                {
+                    _TransDict = new Dictionary< string, TreeNode >();
+                }
+                _TransDict.Add( node.Word, node );
             }
 
             /// <summary>
             /// Returns transition to specified character (if exists)
             /// </summary>
-            /// <param name="c">Character</param>
+            /// <param name="word">word</param>
             /// <returns>Returns TreeNode or null</returns>
             public TreeNode GetTransition( string word )
             {
-                var node = default(TreeNode);
-                if ( _TransDictionary.TryGetValue( word, out node ) )
+                TreeNode node;
+                if ( (_TransDict != null) && _TransDict.TryGetValue( word, out node ) )
                     return (node);
                 return (null);
             }
@@ -214,63 +179,45 @@ namespace lingvo.sentsplitting
             /// <returns>True if transition exists</returns>
             public bool ContainsTransition( string word )
             {
-                return (_TransDictionary.ContainsKey( word ));
+                return ((_TransDict != null) && _TransDict.ContainsKey( word ));
             }
             #endregion
 
             #region [.properties.]
-            private Dictionary< string, TreeNode > _TransDictionary;
+            private Dictionary< string, TreeNode > _TransDict;
+            private HashSet< ngram_t< TValue > > _Ngrams;
 
             /// <summary>
             /// Character
             /// </summary>
-            public string Word
-            {
-                get;
-                private set;
-            }
+            public string Word { get; private set; }
 
             /// <summary>
             /// Parent tree node
             /// </summary>
-            public TreeNode Parent
-            {
-                get;
-                private set;
-            }
+            public TreeNode Parent { get; private set; }
 
             /// <summary>
             /// Failure function - descendant node
             /// </summary>
-            public TreeNode Failure
-            {
-                get;
-                internal set;
-            }
+            public TreeNode Failure { get; internal set; }
 
             /// <summary>
             /// Transition function - list of descendant nodes
             /// </summary>
-            public TreeNode[] Transitions
-            {
-                get;
-                private set;
-            }
+            public IEnumerable< TreeNode > Transitions { get { return ((_TransDict != null) ? _TransDict.Values : Enumerable.Empty< TreeNode >()); } }
 
             /// <summary>
             /// Returns list of patterns ending by this letter
             /// </summary>
-            public HashSet< ngram_t< TValue > > Ngrams
-            {
-                get;
-                private set;
-            }
+            public IEnumerable< ngram_t< TValue > > Ngrams { get { return (_Ngrams ?? Enumerable.Empty< ngram_t< TValue > >()); } }
+            public bool HasNgrams { get { return (_Ngrams != null); } }
             #endregion
 
             public override string ToString()
             {
                 return ( ((Word != null) ? ('\'' + Word + '\'') : "ROOT") +
-                         ", transitions(descendants): " + Transitions.Length + ", ngrams: " + Ngrams.Count );
+                         ", transitions(descendants): " + ((_TransDict != null) ? _TransDict.Count : 0) + ", ngrams: " + ((_Ngrams != null) ? _Ngrams.Count : 0));
             }
         }
 
@@ -290,6 +237,7 @@ namespace lingvo.sentsplitting
                     return (d);
 
                 return (x.StartIndex - y.StartIndex);
+
                 //d = x.StartIndex - y.StartIndex;
                 //if ( d != 0 )
                     //return (d);
@@ -313,6 +261,39 @@ namespace lingvo.sentsplitting
                 return (y.Length - x.Length);
             }
             #endregion
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private struct Finder
+        {
+            private TreeNode _Root;
+            private TreeNode _Node;
+            public static Finder Create( TreeNode root ) => new Finder() { _Root = root, _Node = root };
+
+            public TreeNode Find( string word )
+            {
+                TreeNode transNode;
+                do
+                {
+                    transNode = _Node.GetTransition( word );
+                    if ( _Node == _Root )
+                    {
+                        break;
+                    }
+                    if ( transNode == null )
+                    {
+                        _Node = _Node.Failure;
+                    }
+                }
+                while ( transNode == null );
+                if ( transNode != null )
+                {
+                    _Node = transNode;
+                }
+                return (_Node);
+            }
         }
 
         #region [.private field's.]
@@ -431,103 +412,65 @@ namespace lingvo.sentsplitting
         #endregion
 
         #region [.public method's & properties.]
-        internal int Count
-        {
-            get;
-            private set;
-        }
-        internal int NgramMaxLength
-        {
-            get;
-            private set;
-        }
-        /*internal int ValuesMaxLength
-        {
-            get;
-            private set;
-        }*/
+        internal int Count          { get; private set; }
+        internal int NgramMaxLength { get; private set; }
+        //internal int ValuesMaxLength { get; private set; }
 
         internal ICollection< SearchResult< TValue > > FindAll( DirectAccessList< ss_word_t > words )
         {
-            var searchResults = default(SortedSet< SearchResult< TValue > >);
+            var ss = default(SortedSet< SearchResult< TValue > >);
+            var finder = Finder.Create( _Root );
 
-            TreeNode node = _Root;
             for ( int index = 0, len = words.Count; index < len; index++ )
             {
-                TreeNode trans = null;
-                while ( trans == null )
-                {
-                    trans = node.GetTransition( words._Items[ index ].valueOriginal );
-                    if ( node == _Root ) 
-                        break;
-                    if ( trans == null ) 
-                        node = node.Failure;
-                }
-                if ( trans != null ) 
-                    node = trans;
+                var node = finder.Find( words._Items[ index ].valueOriginal );
 
-                if ( 0 < node.Ngrams.Count )
+                if ( node.HasNgrams )
                 {
-                    if ( searchResults == null )
-                    {
-                        searchResults = new SortedSet< SearchResult< TValue > >( SearchResultIComparer.Instance );
-                    }
-                    //for ( int i = 0, len = node.Ngrams.Count; i < len; i++ )
+                    if ( ss == null ) ss = new SortedSet< SearchResult< TValue > >( SearchResultIComparer.Instance );
+                    
                     foreach ( var ngram in node.Ngrams )
                     {
-                        var r = searchResults.Add( new SearchResult< TValue >( index - ngram.words.Length + 1, ngram.words.Length, ngram.value ) );
+                        var r = ss.Add( new SearchResult< TValue >( index - ngram.words.Length + 1, ngram.words.Length, ngram.value ) );
                         System.Diagnostics.Debug.Assert( r );
                     }
                 }
             }
-            if ( searchResults != null )
+            if ( ss != null )
             {
-                return (searchResults);
+                return (ss);
             }
             return (EMPTY_RESULT_1);
         }
         internal ICollection< SearchResultOfHead2Left< TValue > > FindOfHead2Left( ss_word_t headWord )
         {
-            var searchResults = default(SortedSet< SearchResultOfHead2Left< TValue > >);
+            var ss = default(SortedSet< SearchResultOfHead2Left< TValue > >);
+            var finder = Finder.Create( _Root );            
+            int index = 0;
 
-            TreeNode node  = _Root;
-            int      index = 0;
             for ( var word = headWord; word != null; word = word.next )
             {
-                TreeNode trans = null;
-                while ( trans == null )
-                {
-                    trans = node.GetTransition( word.valueOriginal );
-                    if ( node == _Root ) 
-                        break;
-                    if ( trans == null ) 
-                        node = node.Failure;
-                }
-                if ( trans != null ) 
-                    node = trans;
+                var node = finder.Find( word.valueOriginal );
 
-                if ( 0 < node.Ngrams.Count )
+                if ( node.HasNgrams )
                 {
-                    //for ( int i = 0, len = node.Ngrams.Count; i < len; i++ )
                     foreach ( var ngram in node.Ngrams )
                     {
                         var wordIndex = index - ngram.words.Length + 1;
                         if ( wordIndex == 0 )
                         {
-                            if ( searchResults == null )
-                            {
-                                searchResults = new SortedSet< SearchResultOfHead2Left< TValue > >( SearchResultOfHead2LeftIComparer.Instance );
-                            }
-                            var r = searchResults.Add( new SearchResultOfHead2Left< TValue >( word, ngram.words.Length, ngram.value ) );
+                            if ( ss == null ) ss = new SortedSet< SearchResultOfHead2Left< TValue > >( SearchResultOfHead2LeftIComparer.Instance );
+
+                            var r = ss.Add( new SearchResultOfHead2Left< TValue >( word, ngram.words.Length, ngram.value ) );
                             System.Diagnostics.Debug.Assert( r );
                         }
                     }
                 }
                 index++;
             }
-            if ( searchResults != null )
+            if ( ss != null )
             {
-                return (searchResults);
+                return (ss);
             }
             return (EMPTY_RESULT_2);
         }

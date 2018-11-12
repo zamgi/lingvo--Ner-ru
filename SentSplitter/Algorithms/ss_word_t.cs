@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+﻿using System.Text;
 
 namespace lingvo.sentsplitting
 {
     /// <summary>
     /// 
     /// </summary>
-    unsafe internal class ss_word_t
+    unsafe internal sealed class ss_word_t
     {
         public ss_word_t( char* _startPtr, int _length )
         {
@@ -17,14 +13,6 @@ namespace lingvo.sentsplitting
             length        = _length;
             valueOriginal = new string( _startPtr, 0, _length );
         }
-        /*public static word_t create_with_valueOriginal( char* _startPtr, int _length )
-        {
-            var word = new word_t( _startPtr, _length )
-            {
-                valueOriginal = new string( _startPtr, 0, _length ),
-            };
-            return (word);
-        }*/
 
         public string valueOriginal;
         public string valueUpper;
