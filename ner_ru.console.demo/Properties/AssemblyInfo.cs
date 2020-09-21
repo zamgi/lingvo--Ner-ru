@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ner_ru.console.demo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("xz")]
+[assembly: AssemblyCompany("zamgi")]
 [assembly: AssemblyProduct("ner_ru.console.demo")]
-[assembly: AssemblyCopyright("Copyright © xz 2017")]
+[assembly: AssemblyCopyright("Copyright © zamgi 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

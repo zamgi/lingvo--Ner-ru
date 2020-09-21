@@ -31,6 +31,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -167,7 +168,9 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo ------------ copy native crfsuite_.dll ------------
+copy "..\..\[lib]\crfsuite_x64.dll" "$(ProjectDir)\bin"
+copy "..\..\[lib]\crfsuite_x86.dll" "$(ProjectDir)\bin"
+copy "..\..\[lib]\libcrfsuite.so" "$(ProjectDir)\bin"</PostBuildEvent>
   </PropertyGroup>
 </Project>
