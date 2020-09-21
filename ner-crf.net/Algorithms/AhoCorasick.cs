@@ -77,8 +77,6 @@ namespace lingvo.ner
     /// </summary>
     internal sealed class AhoCorasick
     {
-        internal const byte DONT_MERGE_WITH_NAME_ANOTHER = 0xFF;
-
         /// <summary>
         /// Tree node representing character and its transition and failure function
         /// </summary>
