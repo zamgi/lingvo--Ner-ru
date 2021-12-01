@@ -17,18 +17,8 @@ namespace lingvo
         public static readonly string NER_MODEL_FILENAME                   = ConfigurationManager.AppSettings[ "NER_MODEL_FILENAME" ];
         public static readonly string NER_TEMPLATE_FILENAME                = ConfigurationManager.AppSettings[ "NER_TEMPLATE_FILENAME" ];
         public static readonly LanguageTypeEnum LANGUAGE_TYPE              = ConfigurationManager.AppSettings[ "LANGUAGE_TYPE" ].ToEnum< LanguageTypeEnum >();
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    internal static class Ext
-    {
-        public static T ToEnum< T >( this string value ) where T : struct
-        {
-            var e = (T) Enum.Parse( typeof( T ), value, true );
-            return (e);
-        }
+        public static T ToEnum< T >( this string value ) where T : struct => (T) Enum.Parse( typeof( T ), value, true );
     }
 }
 
@@ -62,10 +52,8 @@ namespace lingvo.ner
 
         private static NerProcessorConfig CreateNerProcessorConfig()
         {
-            var sentSplitterConfig = new SentSplitterConfig( Config.SENT_SPLITTER_RESOURCES_XML_FILENAME,
-                                                             Config.URL_DETECTOR_RESOURCES_XML_FILENAME );
-            var config = new NerProcessorConfig( Config.TOKENIZER_RESOURCES_XML_FILENAME, 
-                                                 Config.LANGUAGE_TYPE, sentSplitterConfig )
+            var sentSplitterConfig = new SentSplitterConfig( Config.SENT_SPLITTER_RESOURCES_XML_FILENAME, Config.URL_DETECTOR_RESOURCES_XML_FILENAME );
+            var config = new NerProcessorConfig( Config.TOKENIZER_RESOURCES_XML_FILENAME,  Config.LANGUAGE_TYPE, sentSplitterConfig )
             {
                 ModelFilename    = Config.NER_MODEL_FILENAME,
                 TemplateFilename = Config.NER_TEMPLATE_FILENAME,

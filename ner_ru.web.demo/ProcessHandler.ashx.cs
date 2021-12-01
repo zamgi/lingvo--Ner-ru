@@ -13,7 +13,7 @@ namespace lingvo.ner
     /// <summary>
     /// 
     /// </summary>
-    public sealed class RESTProcessHandler : IHttpHandler
+    public sealed class ProcessHandler : IHttpHandler
     {
         /// <summary>
         /// 
@@ -164,7 +164,7 @@ namespace lingvo.ner
             }
         }
 
-        static RESTProcessHandler()
+        static ProcessHandler()
         {
             Environment.CurrentDirectory = HttpContext.Current.Server.MapPath( "~/" );
         }

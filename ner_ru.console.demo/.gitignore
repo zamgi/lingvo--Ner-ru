@@ -1,9 +1,3 @@
-/bin/*.pdb
-/bin/crfsuite.net.dll
-/bin/SentSplitter.dll
-/bin/lingvo.core.dll
-/bin/ner-crf.net.dll
-/bin/ner_ru.console.demo.exe
-/bin/ner_ru.console.demo.exe.config
+/bin/*
 /obj/*
 *.csproj.user

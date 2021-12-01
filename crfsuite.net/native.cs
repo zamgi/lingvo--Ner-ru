@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.IO;
 
 namespace lingvo.crfsuite
 {
@@ -43,35 +39,21 @@ namespace lingvo.crfsuite
     /// <summary>
     /// 
     /// </summary>
-    unsafe public static class native
+    unsafe public static class Native
     {
-        static native()
-        {
-            load_native_crf_suite();
-        }
+        static Native() => load_native_crf_suite();
 
         private static bool IsLinux()
         {
             var p = (int)Environment.OSVersion.Platform;
             return (p == 4) || (p == 6) || (p == 128);
         }
-        private static bool Isx64()
-        {
-            return (IntPtr.Size == 8);
-        }
+        private static bool Isx64() => (IntPtr.Size == 8);
 
-        private const string DLL_NAME_WINDOWS_x64 = "crfsuite_x64.dll";
-        private const string DLL_NAME_WINDOWS_x86 = "crfsuite_x86.dll";
-        private const string DLL_NAME_LINUX_x64   = "libcrfsuite.so";
-        private const string DLL_NAME_LINUX_x86   = DLL_NAME_LINUX_x64;
-        private static bool  DLL_LOADED = false;
-        private static readonly object _Lock = new object();
-		
- 		//[DllImport("libc", CallingConvention = CallingConvention.Cdecl, EntryPoint = "getpid")]
- 		//public static extern int getpid_xz();
-		
-        //[DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
-        //public extern static IntPtr crf_tagger_initialize_2(IntPtr/*string*/ name);		
+        private const string DLL_WIN_x64 = "crfsuite_x64.dll";
+        private const string DLL_WIN_x86 = "crfsuite_x86.dll";
+        private const string DLL_LIN_x64 = "libcrfsuite.so";
+        private const string DLL_LIN_x86 = DLL_LIN_x64;
 		
         private const string crf_tagger_initialize_name               = "crf_tagger_initialize";
         private const string crf_tagger_beginAddItemSequence_name     = "crf_tagger_beginAddItemSequence";
@@ -155,71 +137,71 @@ namespace lingvo.crfsuite
 
         #region [.win.]
         #region [.x64.]
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
         private extern static IntPtr crf_tagger_initialize_win_x64( IntPtr/*string*/ name );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
         private extern static void crf_tagger_beginAddItemSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
         private extern static void crf_tagger_beginAddItemAttribute_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
         private extern static bool crf_tagger_addItemAttribute_win_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
         private extern static void crf_tagger_addItemAttributeNameOnly_win_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
         private extern static void crf_tagger_endAddItemAttribute_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
         private extern static void crf_tagger_endAddItemSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
         private extern static void crf_tagger_tag_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name )]
         private extern static double crf_tagger_tag_with_probability_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
         private extern static double crf_tagger_tag_with_marginal_win_x64( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
         private extern static uint crf_tagger_getResultLength_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_win_x64( IntPtr taggerWrapper, uint index );
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name)]
         private extern static double crf_tagger_getResultMarginal_win_x64( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
         private extern static void crf_tagger_uninitialize_win_x64( IntPtr taggerWrapper );
 
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
         private extern static IntPtr crf_tagger_ma_initialize_win_x64( IntPtr name );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
         private extern static void crf_tagger_ma_beginAddNgramSequence_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
         private extern static void crf_tagger_ma_addNgramSequence_win_x64( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
         private extern static void crf_tagger_ma_endAddNgramSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
         private extern static void crf_tagger_ma_setNgramValue_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
         private extern static double crf_tagger_ma_tagNgram_with_probability_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
         private extern static IntPtr crf_tagger_ma_getResultValue_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
         private extern static void crf_tagger_ma_uninitialize_win_x64( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
@@ -265,71 +247,71 @@ namespace lingvo.crfsuite
         #endregion
 
         #region [.x86.]
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
         private extern static IntPtr crf_tagger_initialize_win_x86(IntPtr/*string*/ name);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
         private extern static void crf_tagger_beginAddItemSequence_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
         private extern static void crf_tagger_beginAddItemAttribute_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
         private extern static bool crf_tagger_addItemAttribute_win_x86(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
         private extern static void crf_tagger_addItemAttributeNameOnly_win_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
         private extern static void crf_tagger_endAddItemAttribute_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
         private extern static void crf_tagger_endAddItemSequence_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
         private extern static void crf_tagger_tag_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
         private extern static double crf_tagger_tag_with_marginal_win_x86( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
         private extern static uint crf_tagger_getResultLength_win_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_win_x86(IntPtr taggerWrapper, uint index);
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
         private extern static double crf_tagger_getResultMarginal_win_x86( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
         private extern static void crf_tagger_uninitialize_win_x86(IntPtr taggerWrapper);
 
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
         private extern static IntPtr crf_tagger_ma_initialize_win_x86( IntPtr name );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
         private extern static void crf_tagger_ma_beginAddNgramSequence_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
         private extern static void crf_tagger_ma_addNgramSequence_win_x86( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
         private extern static void crf_tagger_ma_endAddNgramSequence_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
         private extern static void crf_tagger_ma_setNgramValue_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
         private extern static double crf_tagger_ma_tagNgram_with_probability_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
         private extern static IntPtr crf_tagger_ma_getResultValue_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
         private extern static void crf_tagger_ma_uninitialize_win_x86( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
@@ -377,71 +359,71 @@ namespace lingvo.crfsuite
 
         #region [.linux.]
         #region [.x64.]
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
         private extern static IntPtr crf_tagger_initialize_lin_x64(IntPtr/*string*/ name);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
         private extern static void crf_tagger_beginAddItemSequence_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
         private extern static void crf_tagger_beginAddItemAttribute_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
         private extern static bool crf_tagger_addItemAttribute_lin_x64(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
         private extern static void crf_tagger_addItemAttributeNameOnly_lin_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
         private extern static void crf_tagger_endAddItemAttribute_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
         private extern static void crf_tagger_endAddItemSequence_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
         private extern static void crf_tagger_tag_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name)]
         private extern static double crf_tagger_tag_with_marginal_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
         private extern static uint crf_tagger_getResultLength_lin_x64(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_lin_x64(IntPtr taggerWrapper, uint index);
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
         private extern static double crf_tagger_getResultMarginal_lin_x64( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
         private extern static void crf_tagger_uninitialize_lin_x64(IntPtr taggerWrapper);
 
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
         private extern static IntPtr crf_tagger_ma_initialize_lin_x64( IntPtr name );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
         private extern static void crf_tagger_ma_beginAddNgramSequence_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
         private extern static void crf_tagger_ma_addNgramSequence_lin_x64( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
         private extern static void crf_tagger_ma_endAddNgramSequence_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
         private extern static void crf_tagger_ma_setNgramValue_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
         private extern static double crf_tagger_ma_tagNgram_with_probability_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
         private extern static IntPtr crf_tagger_ma_getResultValue_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
         private extern static void crf_tagger_ma_uninitialize_lin_x64( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
@@ -487,71 +469,71 @@ namespace lingvo.crfsuite
         #endregion
 
         #region [.x86.]
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
         private extern static IntPtr crf_tagger_initialize_lin_x86(IntPtr/*string*/ name);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
         private extern static void crf_tagger_beginAddItemSequence_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
         private extern static void crf_tagger_beginAddItemAttribute_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
         private extern static bool crf_tagger_addItemAttribute_lin_x86(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
         private extern static void crf_tagger_addItemAttributeNameOnly_lin_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
         private extern static void crf_tagger_endAddItemAttribute_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
         private extern static void crf_tagger_endAddItemSequence_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
         private extern static void crf_tagger_tag_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
         private extern static double crf_tagger_tag_with_marginal_lin_x86( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
         private extern static uint crf_tagger_getResultLength_lin_x86(IntPtr taggerWrapper);
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_lin_x86( IntPtr taggerWrapper, uint index );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
         private extern static double crf_tagger_getResultMarginal_lin_x86( IntPtr taggerWrapper, uint index ); 
 
-        [DllImport(DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
         private extern static void crf_tagger_uninitialize_lin_x86(IntPtr taggerWrapper);
 
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
         private extern static IntPtr crf_tagger_ma_initialize_lin_x86( IntPtr name );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
         private extern static void crf_tagger_ma_beginAddNgramSequence_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
         private extern static void crf_tagger_ma_addNgramSequence_lin_x86( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
         private extern static void crf_tagger_ma_endAddNgramSequence_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
         private extern static void crf_tagger_ma_setNgramValue_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
         private extern static double crf_tagger_ma_tagNgram_with_probability_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
         private extern static IntPtr crf_tagger_ma_getResultValue_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
         private extern static void crf_tagger_ma_uninitialize_lin_x86( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
@@ -597,29 +579,29 @@ namespace lingvo.crfsuite
         #endregion
         #endregion
 
-        public static crf_tagger_initialize_Delegate               crf_tagger_initialize;
-        public static crf_tagger_beginAddItemSequence_Delegate     crf_tagger_beginAddItemSequence;
-        public static crf_tagger_beginAddItemAttribute_Delegate    crf_tagger_beginAddItemAttribute;
-        public static crf_tagger_addItemAttribute_Delegate         crf_tagger_addItemAttribute;
-        public static crf_tagger_addItemAttributeNameOnly_Delegate crf_tagger_addItemAttributeNameOnly;
-        public static crf_tagger_endAddItemAttribute_Delegate      crf_tagger_endAddItemAttribute;
-        public static crf_tagger_endAddItemSequence_Delegate       crf_tagger_endAddItemSequence;
-        public static crf_tagger_tag_Delegate                      crf_tagger_tag;
-        public static crf_tagger_tag_with_probability_Delegate     crf_tagger_tag_with_probability;
-        public static crf_tagger_tag_with_marginal_Delegate        crf_tagger_tag_with_marginal;        
-        public static crf_tagger_getResultLength_Delegate          crf_tagger_getResultLength;
-        public static crf_tagger_getResultValue_Delegate           crf_tagger_getResultValue;
-        public static crf_tagger_getResultMarginal_Delegate        crf_tagger_getResultMarginal;
-        public static crf_tagger_uninitialize_Delegate             crf_tagger_uninitialize;
+        public static crf_tagger_initialize_Delegate               crf_tagger_initialize { get; private set; }
+        public static crf_tagger_beginAddItemSequence_Delegate     crf_tagger_beginAddItemSequence { get; private set; }
+        public static crf_tagger_beginAddItemAttribute_Delegate    crf_tagger_beginAddItemAttribute { get; private set; }
+        public static crf_tagger_addItemAttribute_Delegate         crf_tagger_addItemAttribute { get; private set; }
+        public static crf_tagger_addItemAttributeNameOnly_Delegate crf_tagger_addItemAttributeNameOnly { get; private set; }
+        public static crf_tagger_endAddItemAttribute_Delegate      crf_tagger_endAddItemAttribute { get; private set; }
+        public static crf_tagger_endAddItemSequence_Delegate       crf_tagger_endAddItemSequence { get; private set; }
+        public static crf_tagger_tag_Delegate                      crf_tagger_tag { get; private set; }
+        public static crf_tagger_tag_with_probability_Delegate     crf_tagger_tag_with_probability { get; private set; }
+        public static crf_tagger_tag_with_marginal_Delegate        crf_tagger_tag_with_marginal { get; private set; }
+        public static crf_tagger_getResultLength_Delegate          crf_tagger_getResultLength { get; private set; }
+        public static crf_tagger_getResultValue_Delegate           crf_tagger_getResultValue { get; private set; }
+        public static crf_tagger_getResultMarginal_Delegate        crf_tagger_getResultMarginal { get; private set; }
+        public static crf_tagger_uninitialize_Delegate             crf_tagger_uninitialize { get; private set; }
 
-        public static crf_tagger_ma_initialize_Delegate                crf_tagger_ma_initialize;
-        public static crf_tagger_ma_beginAddNgramSequence_Delegate     crf_tagger_ma_beginAddNgramSequence;
-        public static crf_tagger_ma_addNgramSequence_Delegate          crf_tagger_ma_addNgramSequence;
-        public static crf_tagger_ma_endAddNgramSequence_Delegate       crf_tagger_ma_endAddNgramSequence;
-        public static crf_tagger_ma_setNgramValue_Delegate             crf_tagger_ma_setNgramValue;
-        public static crf_tagger_ma_tagNgram_with_probability_Delegate crf_tagger_ma_tagNgram_with_probability;
-        public static crf_tagger_ma_getResultValue_Delegate            crf_tagger_ma_getResultValue;
-        public static crf_tagger_ma_uninitialize_Delegate              crf_tagger_ma_uninitialize;
+        public static crf_tagger_ma_initialize_Delegate                crf_tagger_ma_initialize { get; private set; }
+        public static crf_tagger_ma_beginAddNgramSequence_Delegate     crf_tagger_ma_beginAddNgramSequence { get; private set; }
+        public static crf_tagger_ma_addNgramSequence_Delegate          crf_tagger_ma_addNgramSequence { get; private set; }
+        public static crf_tagger_ma_endAddNgramSequence_Delegate       crf_tagger_ma_endAddNgramSequence { get; private set; }
+        public static crf_tagger_ma_setNgramValue_Delegate             crf_tagger_ma_setNgramValue { get; private set; }
+        public static crf_tagger_ma_tagNgram_with_probability_Delegate crf_tagger_ma_tagNgram_with_probability { get; private set; }
+        public static crf_tagger_ma_getResultValue_Delegate            crf_tagger_ma_getResultValue { get; private set; }
+        public static crf_tagger_ma_uninitialize_Delegate              crf_tagger_ma_uninitialize { get; private set; }
 
         #region [.learner. not used.]
         /*
@@ -638,202 +620,185 @@ namespace lingvo.crfsuite
         */
         #endregion
 
-        public static void load_native_crf_suite()
+        private static void load_native_crf_suite()
 		{
-			if ( DLL_LOADED )
-			{
-				return;
-			}
-
-            lock ( _Lock )
+            if ( IsLinux() )
             {
-			    if ( DLL_LOADED )
-			    {
-				    return;
-			    }
-                //throw new ArgumentException( File.ReadAllBytes( DLL_NAME_LINUX_x64 ).Length.ToString() );
-                //throw new ArgumentException( new FileInfo( DLL_NAME_LINUX_x64 ).FullName.ToString() );
-                //throw new ArgumentException(new FileInfo( Path.Combine( Environment.CurrentDirectory , DLL_NAME_LINUX_x64 ) ).Exists.ToString());
-                if ( IsLinux() )
+                if ( Isx64() )
                 {
-                    if ( Isx64() )
-                    {
-                        crf_tagger_initialize               = crf_tagger_initialize_lin_x64;
-                        crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_lin_x64;
-                        crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_lin_x64;
-                        crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_lin_x64;
-                        crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_lin_x64;
-                        crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_lin_x64;
-                        crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_lin_x64;
-                        crf_tagger_tag                      = crf_tagger_tag_lin_x64;
-                        crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_lin_x64;
-                        crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_lin_x64;
-                        crf_tagger_getResultLength          = crf_tagger_getResultLength_lin_x64;
-                        crf_tagger_getResultValue           = crf_tagger_getResultValue_lin_x64;
-                        crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_lin_x64;
-                        crf_tagger_uninitialize             = crf_tagger_uninitialize_lin_x64;
+                    crf_tagger_initialize               = crf_tagger_initialize_lin_x64;
+                    crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_lin_x64;
+                    crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_lin_x64;
+                    crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_lin_x64;
+                    crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_lin_x64;
+                    crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_lin_x64;
+                    crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_lin_x64;
+                    crf_tagger_tag                      = crf_tagger_tag_lin_x64;
+                    crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_lin_x64;
+                    crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_lin_x64;
+                    crf_tagger_getResultLength          = crf_tagger_getResultLength_lin_x64;
+                    crf_tagger_getResultValue           = crf_tagger_getResultValue_lin_x64;
+                    crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_lin_x64;
+                    crf_tagger_uninitialize             = crf_tagger_uninitialize_lin_x64;
 
-                        crf_tagger_ma_initialize                = crf_tagger_ma_initialize_lin_x64;
-                        crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_lin_x64;
-                        crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_lin_x64;
-                        crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_lin_x64;
-                        crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_lin_x64;
-                        crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_lin_x64;
-                        crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_lin_x64;
-                        crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_lin_x64;
+                    crf_tagger_ma_initialize                = crf_tagger_ma_initialize_lin_x64;
+                    crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_lin_x64;
+                    crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_lin_x64;
+                    crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_lin_x64;
+                    crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_lin_x64;
+                    crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_lin_x64;
+                    crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_lin_x64;
+                    crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_lin_x64;
 
-                        #region [.learner. not used.]
-                        /*
-                        crf_learner_initialize            = crf_learner_initialize_lin_x64;
-                        crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_lin_x64;
-                        crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_lin_x64;
-                        crf_learner_addItemAttribute      = crf_learner_addItemAttribute_lin_x64;
-                        crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_lin_x64;
-                        crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_lin_x64;
-                        crf_learner_beginAddStringList    = crf_learner_beginAddStringList_lin_x64;
-                        crf_learner_addString             = crf_learner_addString_lin_x64;
-                        crf_learner_endAddStringList      = crf_learner_endAddStringList_lin_x64;
-                        crf_learner_append                = crf_learner_append_lin_x64;
-                        crf_learner_train                 = crf_learner_train_lin_x64;
-                        crf_learner_uninitialize          = crf_learner_uninitialize_lin_x64;
-                        */
-                        #endregion
-                    }
-                    else
-                    {
-                        crf_tagger_initialize               = crf_tagger_initialize_lin_x86;
-                        crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_lin_x86;
-                        crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_lin_x86;
-                        crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_lin_x86;
-                        crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_lin_x86;
-                        crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_lin_x86;
-                        crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_lin_x86;
-                        crf_tagger_tag                      = crf_tagger_tag_lin_x86;
-                        crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_lin_x86;
-                        crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_lin_x86;
-                        crf_tagger_getResultLength          = crf_tagger_getResultLength_lin_x86;
-                        crf_tagger_getResultValue           = crf_tagger_getResultValue_lin_x86;
-                        crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_lin_x86;
-                        crf_tagger_uninitialize             = crf_tagger_uninitialize_lin_x86;
-
-                        crf_tagger_ma_initialize                = crf_tagger_ma_initialize_lin_x86;
-                        crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_lin_x86;
-                        crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_lin_x86;
-                        crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_lin_x86;
-                        crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_lin_x86;
-                        crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_lin_x86;
-                        crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_lin_x86;
-                        crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_lin_x86;
-
-                        #region [.learner. not used.]
-                        /*
-                        crf_learner_initialize            = crf_learner_initialize_lin_x86;
-                        crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_lin_x86;
-                        crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_lin_x86;
-                        crf_learner_addItemAttribute      = crf_learner_addItemAttribute_lin_x86;
-                        crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_lin_x86;
-                        crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_lin_x86;
-                        crf_learner_beginAddStringList    = crf_learner_beginAddStringList_lin_x86;
-                        crf_learner_addString             = crf_learner_addString_lin_x86;
-                        crf_learner_endAddStringList      = crf_learner_endAddStringList_lin_x86;
-                        crf_learner_append                = crf_learner_append_lin_x86;
-                        crf_learner_train                 = crf_learner_train_lin_x86;
-                        crf_learner_uninitialize          = crf_learner_uninitialize_lin_x86;
-                        */
-                        #endregion
-                    }
-                } 
-                else 
-                {
-                    if ( Isx64() )
-                    {
-                        crf_tagger_initialize               = crf_tagger_initialize_win_x64;
-                        crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_win_x64;
-                        crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_win_x64;
-                        crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_win_x64;
-                        crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_win_x64;
-                        crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_win_x64;
-                        crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_win_x64;
-                        crf_tagger_tag                      = crf_tagger_tag_win_x64;
-                        crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_win_x64;
-                        crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_win_x64;
-                        crf_tagger_getResultLength          = crf_tagger_getResultLength_win_x64;
-                        crf_tagger_getResultValue           = crf_tagger_getResultValue_win_x64;
-                        crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_win_x64;
-                        crf_tagger_uninitialize             = crf_tagger_uninitialize_win_x64;
-
-                        crf_tagger_ma_initialize                = crf_tagger_ma_initialize_win_x64;
-                        crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_win_x64;
-                        crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_win_x64;
-                        crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_win_x64;
-                        crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_win_x64;
-                        crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_win_x64;
-                        crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_win_x64;
-                        crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_win_x64;
-
-                        #region [.learner. not used.]
-                        /*
-                        crf_learner_initialize            = crf_learner_initialize_win_x64;
-                        crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_win_x64;
-                        crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_win_x64;
-                        crf_learner_addItemAttribute      = crf_learner_addItemAttribute_win_x64;
-                        crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_win_x64;
-                        crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_win_x64;
-                        crf_learner_beginAddStringList    = crf_learner_beginAddStringList_win_x64;
-                        crf_learner_addString             = crf_learner_addString_win_x64;
-                        crf_learner_endAddStringList      = crf_learner_endAddStringList_win_x64;
-                        crf_learner_append                = crf_learner_append_win_x64;
-                        crf_learner_train                 = crf_learner_train_win_x64;
-                        crf_learner_uninitialize          = crf_learner_uninitialize_win_x64;
-                        */
-                        #endregion
-                    }
-                    else
-                    {
-                        crf_tagger_initialize               = crf_tagger_initialize_win_x86;
-                        crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_win_x86;
-                        crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_win_x86;
-                        crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_win_x86;
-                        crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_win_x86;
-                        crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_win_x86;
-                        crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_win_x86;
-                        crf_tagger_tag                      = crf_tagger_tag_win_x86;
-                        crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_win_x86;
-                        crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_win_x86;
-                        crf_tagger_getResultLength          = crf_tagger_getResultLength_win_x86;
-                        crf_tagger_getResultValue           = crf_tagger_getResultValue_win_x86;
-                        crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_win_x86;
-                        crf_tagger_uninitialize             = crf_tagger_uninitialize_win_x86;
-
-                        crf_tagger_ma_initialize                = crf_tagger_ma_initialize_win_x86;
-                        crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_win_x86;
-                        crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_win_x86;
-                        crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_win_x86;
-                        crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_win_x86;
-                        crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_win_x86;
-                        crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_win_x86;
-                        crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_win_x86;
-
-                        #region [.learner. not used.]
-                        /*
-                        crf_learner_initialize            = crf_learner_initialize_win_x86;
-                        crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_win_x86;
-                        crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_win_x86;
-                        crf_learner_addItemAttribute      = crf_learner_addItemAttribute_win_x86;
-                        crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_win_x86;
-                        crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_win_x86;
-                        crf_learner_beginAddStringList    = crf_learner_beginAddStringList_win_x86;
-                        crf_learner_addString             = crf_learner_addString_win_x86;
-                        crf_learner_endAddStringList      = crf_learner_endAddStringList_win_x86;
-                        crf_learner_append                = crf_learner_append_win_x86;
-                        crf_learner_train                 = crf_learner_train_win_x86;
-                        crf_learner_uninitialize          = crf_learner_uninitialize_win_x86;
-                        */
-                        #endregion
-                    }
+                    #region [.learner. not used.]
+                    /*
+                    crf_learner_initialize            = crf_learner_initialize_lin_x64;
+                    crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_lin_x64;
+                    crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_lin_x64;
+                    crf_learner_addItemAttribute      = crf_learner_addItemAttribute_lin_x64;
+                    crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_lin_x64;
+                    crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_lin_x64;
+                    crf_learner_beginAddStringList    = crf_learner_beginAddStringList_lin_x64;
+                    crf_learner_addString             = crf_learner_addString_lin_x64;
+                    crf_learner_endAddStringList      = crf_learner_endAddStringList_lin_x64;
+                    crf_learner_append                = crf_learner_append_lin_x64;
+                    crf_learner_train                 = crf_learner_train_lin_x64;
+                    crf_learner_uninitialize          = crf_learner_uninitialize_lin_x64;
+                    */
+                    #endregion
                 }
+                else
+                {
+                    crf_tagger_initialize               = crf_tagger_initialize_lin_x86;
+                    crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_lin_x86;
+                    crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_lin_x86;
+                    crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_lin_x86;
+                    crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_lin_x86;
+                    crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_lin_x86;
+                    crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_lin_x86;
+                    crf_tagger_tag                      = crf_tagger_tag_lin_x86;
+                    crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_lin_x86;
+                    crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_lin_x86;
+                    crf_tagger_getResultLength          = crf_tagger_getResultLength_lin_x86;
+                    crf_tagger_getResultValue           = crf_tagger_getResultValue_lin_x86;
+                    crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_lin_x86;
+                    crf_tagger_uninitialize             = crf_tagger_uninitialize_lin_x86;
 
-                DLL_LOADED = true;
+                    crf_tagger_ma_initialize                = crf_tagger_ma_initialize_lin_x86;
+                    crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_lin_x86;
+                    crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_lin_x86;
+                    crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_lin_x86;
+                    crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_lin_x86;
+                    crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_lin_x86;
+                    crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_lin_x86;
+                    crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_lin_x86;
+
+                    #region [.learner. not used.]
+                    /*
+                    crf_learner_initialize            = crf_learner_initialize_lin_x86;
+                    crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_lin_x86;
+                    crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_lin_x86;
+                    crf_learner_addItemAttribute      = crf_learner_addItemAttribute_lin_x86;
+                    crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_lin_x86;
+                    crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_lin_x86;
+                    crf_learner_beginAddStringList    = crf_learner_beginAddStringList_lin_x86;
+                    crf_learner_addString             = crf_learner_addString_lin_x86;
+                    crf_learner_endAddStringList      = crf_learner_endAddStringList_lin_x86;
+                    crf_learner_append                = crf_learner_append_lin_x86;
+                    crf_learner_train                 = crf_learner_train_lin_x86;
+                    crf_learner_uninitialize          = crf_learner_uninitialize_lin_x86;
+                    */
+                    #endregion
+                }
+            } 
+            else 
+            {
+                if ( Isx64() )
+                {
+                    crf_tagger_initialize               = crf_tagger_initialize_win_x64;
+                    crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_win_x64;
+                    crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_win_x64;
+                    crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_win_x64;
+                    crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_win_x64;
+                    crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_win_x64;
+                    crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_win_x64;
+                    crf_tagger_tag                      = crf_tagger_tag_win_x64;
+                    crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_win_x64;
+                    crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_win_x64;
+                    crf_tagger_getResultLength          = crf_tagger_getResultLength_win_x64;
+                    crf_tagger_getResultValue           = crf_tagger_getResultValue_win_x64;
+                    crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_win_x64;
+                    crf_tagger_uninitialize             = crf_tagger_uninitialize_win_x64;
+
+                    crf_tagger_ma_initialize                = crf_tagger_ma_initialize_win_x64;
+                    crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_win_x64;
+                    crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_win_x64;
+                    crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_win_x64;
+                    crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_win_x64;
+                    crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_win_x64;
+                    crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_win_x64;
+                    crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_win_x64;
+
+                    #region [.learner. not used.]
+                    /*
+                    crf_learner_initialize            = crf_learner_initialize_win_x64;
+                    crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_win_x64;
+                    crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_win_x64;
+                    crf_learner_addItemAttribute      = crf_learner_addItemAttribute_win_x64;
+                    crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_win_x64;
+                    crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_win_x64;
+                    crf_learner_beginAddStringList    = crf_learner_beginAddStringList_win_x64;
+                    crf_learner_addString             = crf_learner_addString_win_x64;
+                    crf_learner_endAddStringList      = crf_learner_endAddStringList_win_x64;
+                    crf_learner_append                = crf_learner_append_win_x64;
+                    crf_learner_train                 = crf_learner_train_win_x64;
+                    crf_learner_uninitialize          = crf_learner_uninitialize_win_x64;
+                    */
+                    #endregion
+                }
+                else
+                {
+                    crf_tagger_initialize               = crf_tagger_initialize_win_x86;
+                    crf_tagger_beginAddItemSequence     = crf_tagger_beginAddItemSequence_win_x86;
+                    crf_tagger_beginAddItemAttribute    = crf_tagger_beginAddItemAttribute_win_x86;
+                    crf_tagger_addItemAttribute         = crf_tagger_addItemAttribute_win_x86;
+                    crf_tagger_addItemAttributeNameOnly = crf_tagger_addItemAttributeNameOnly_win_x86;
+                    crf_tagger_endAddItemAttribute      = crf_tagger_endAddItemAttribute_win_x86;
+                    crf_tagger_endAddItemSequence       = crf_tagger_endAddItemSequence_win_x86;
+                    crf_tagger_tag                      = crf_tagger_tag_win_x86;
+                    crf_tagger_tag_with_probability     = crf_tagger_tag_with_probability_win_x86;
+                    crf_tagger_tag_with_marginal        = crf_tagger_tag_with_marginal_win_x86;
+                    crf_tagger_getResultLength          = crf_tagger_getResultLength_win_x86;
+                    crf_tagger_getResultValue           = crf_tagger_getResultValue_win_x86;
+                    crf_tagger_getResultMarginal        = crf_tagger_getResultMarginal_win_x86;
+                    crf_tagger_uninitialize             = crf_tagger_uninitialize_win_x86;
+
+                    crf_tagger_ma_initialize                = crf_tagger_ma_initialize_win_x86;
+                    crf_tagger_ma_beginAddNgramSequence     = crf_tagger_ma_beginAddNgramSequence_win_x86;
+                    crf_tagger_ma_addNgramSequence          = crf_tagger_ma_addNgramSequence_win_x86;
+                    crf_tagger_ma_endAddNgramSequence       = crf_tagger_ma_endAddNgramSequence_win_x86;
+                    crf_tagger_ma_setNgramValue             = crf_tagger_ma_setNgramValue_win_x86;
+                    crf_tagger_ma_tagNgram_with_probability = crf_tagger_ma_tagNgram_with_probability_win_x86;
+                    crf_tagger_ma_getResultValue            = crf_tagger_ma_getResultValue_win_x86;
+                    crf_tagger_ma_uninitialize              = crf_tagger_ma_uninitialize_win_x86;
+
+                    #region [.learner. not used.]
+                    /*
+                    crf_learner_initialize            = crf_learner_initialize_win_x86;
+                    crf_learner_beginAddItemSequence  = crf_learner_beginAddItemSequence_win_x86;
+                    crf_learner_beginAddItemAttribute = crf_learner_beginAddItemAttribute_win_x86;
+                    crf_learner_addItemAttribute      = crf_learner_addItemAttribute_win_x86;
+                    crf_learner_endAddItemAttribute   = crf_learner_endAddItemAttribute_win_x86;
+                    crf_learner_endAddItemSequence    = crf_learner_endAddItemSequence_win_x86;
+                    crf_learner_beginAddStringList    = crf_learner_beginAddStringList_win_x86;
+                    crf_learner_addString             = crf_learner_addString_win_x86;
+                    crf_learner_endAddStringList      = crf_learner_endAddStringList_win_x86;
+                    crf_learner_append                = crf_learner_append_win_x86;
+                    crf_learner_train                 = crf_learner_train_win_x86;
+                    crf_learner_uninitialize          = crf_learner_uninitialize_win_x86;
+                    */
+                    #endregion
+                }
             }
 		}
     }

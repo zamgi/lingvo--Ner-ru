@@ -75,7 +75,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url:  "RESTProcessHandler.ashx",
+            url:  "ProcessHandler.ashx",
             data: {
                 splitBySmiles: true,
                 html         : false,
@@ -146,7 +146,7 @@ $(document).ready(function () {
     (function() {
         $.ajax({
             type: "POST",
-            url: "RESTProcessHandler.ashx",
+            url: "ProcessHandler.ashx",
             data: { splitBySmiles: true, html: false, text: "_dummy_" }
         });
     })();

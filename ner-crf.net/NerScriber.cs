@@ -68,10 +68,15 @@ namespace lingvo.ner
             _CrfTemplateFile = CRFTemplateFileLoader.Load( templateFilename, ALLOWED_COLUMNNAMES );   
 
             //-0-
-            native.load_native_crf_suite();
-            var ptr = Marshal.StringToHGlobalAnsi( modelFilename );			
-            _Tagger = native.crf_tagger_initialize( ptr );
-            Marshal.FreeHGlobal( ptr );
+            var ptr = Marshal.StringToHGlobalAnsi( modelFilename );
+            try
+            {
+                _Tagger = Native.crf_tagger_initialize( ptr );
+            }
+            finally
+            {
+                Marshal.FreeHGlobal( ptr );
+            }            
 
             if ( _Tagger == IntPtr.Zero )
             {
@@ -100,16 +105,8 @@ namespace lingvo.ner
             _StringBuilder4ModelBuilder = new StringBuilder();
 		}
 
-        public static NerScriber Create( string modelFilename, string templateFilename )
-        {
-            var nerScriber = new NerScriber( modelFilename, templateFilename );
-            return (nerScriber);
-        }
-        public static NerScriber Create4ModelBuilder( string templateFilename )
-        {
-            var nerScriber = new NerScriber( templateFilename );
-            return (nerScriber);
-        }
+        public static NerScriber Create( string modelFilename, string templateFilename ) => new NerScriber( modelFilename, templateFilename );
+        public static NerScriber Create4ModelBuilder( string templateFilename ) => new NerScriber( templateFilename );
 
         private void ReAllocPinnedWordsBuffer( int newBufferSize )
         {
@@ -129,21 +126,17 @@ namespace lingvo.ner
             }
         }
 
-        ~NerScriber()
-        {
-            DisposeNativeResources();
-        }
+        ~NerScriber() => DisposeNativeResources();
         public void Dispose()
         {
             DisposeNativeResources();
-
             GC.SuppressFinalize( this );
         }
         private void DisposeNativeResources()
         {
             if ( _Tagger != IntPtr.Zero )
             {
-                native.crf_tagger_uninitialize( _Tagger );
+                Native.crf_tagger_uninitialize( _Tagger );
                 _Tagger = IntPtr.Zero;
             }
 
@@ -177,15 +170,15 @@ namespace lingvo.ner
             #endif
             #endregion
 
-            native.crf_tagger_beginAddItemSequence( _Tagger );
+            Native.crf_tagger_beginAddItemSequence( _Tagger );
 
             #region [.put-attr-values-to-crf.]
             for ( int wordIndex = 0; wordIndex < wordsCount; wordIndex++ )
             {
-                native.crf_tagger_beginAddItemAttribute( _Tagger );
+                Native.crf_tagger_beginAddItemAttribute( _Tagger );
 
                 #region [.process-crf-attributes-by-word.]
-                native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._NerInputtypeOtherPtrBase );
+                Native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._NerInputtypeOtherPtrBase );
                 #if DEBUG
                     sb_attr_debug.Append( xlat_Unsafe.INPUTTYPE_OTHER ).Append( '\t' );
                 #endif
@@ -248,7 +241,7 @@ namespace lingvo.ner
                     *(_AttributeBufferPtr++) = '\0';
                     var attr_len_with_zero = Math.Min( ATTRIBUTE_MAX_LENGTH, (int) (_AttributeBufferPtr - _AttributeBufferPtrBase) );
                     UTF8_ENCODING.GetBytes( _AttributeBufferPtrBase, attr_len_with_zero, _UTF8BufferPtrBase, UTF8_BUFFER_SIZE ); //var bytesWritten = UTF8_ENCODER.GetBytes( attr_ptr, attr_len, utf8buffer, UTF8_BUFFER_SIZE, true ); 
-                    native.crf_tagger_addItemAttributeNameOnly( _Tagger, _UTF8BufferPtrBase );
+                    Native.crf_tagger_addItemAttributeNameOnly( _Tagger, _UTF8BufferPtrBase );
                     #if DEBUG
                         var s_debug = new string( _AttributeBufferPtrBase, 0, attr_len_with_zero - 1 );
                         sb_attr_debug.Append( s_debug ).Append( '\t' );
@@ -258,7 +251,7 @@ namespace lingvo.ner
 
                 if ( wordIndex == 0 )
                 {
-                    native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._BeginOfSentencePtrBase );
+                    Native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._BeginOfSentencePtrBase );
                     #if DEBUG
                         sb_attr_debug.Append( xlat_Unsafe.BEGIN_OF_SENTENCE ).Append( '\t' );
                     #endif
@@ -266,34 +259,34 @@ namespace lingvo.ner
                 else
                 if ( wordIndex == wordsCount_Minus1 )
                 {
-                    native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._EndOfSentencePtrBase );
+                    Native.crf_tagger_addItemAttributeNameOnly( _Tagger, xlat_Unsafe.Inst._EndOfSentencePtrBase );
                     #if DEBUG
                         sb_attr_debug.Append( xlat_Unsafe.END_OF_SENTENCE ).Append( '\t' );
                     #endif
                 }
                 #endregion
 
-                native.crf_tagger_endAddItemAttribute( _Tagger );
+                Native.crf_tagger_endAddItemAttribute( _Tagger );
                 #if DEBUG
                     sb_attr_debug.Append( '\n' );
                 #endif
             }
             #endregion
 
-            native.crf_tagger_endAddItemSequence( _Tagger );
+            Native.crf_tagger_endAddItemSequence( _Tagger );
             #if DEBUG
                 var attr_debug = sb_attr_debug.ToString();
             #endif
 
             #region [.run-crf-tagging-words.]
-            native.crf_tagger_tag( _Tagger );
+            Native.crf_tagger_tag( _Tagger );
             #endregion
 
             #region [.get-crf-tagging-data.]
-            System.Diagnostics.Debug.Assert( native.crf_tagger_getResultLength( _Tagger ) == wordsCount, "(native.crf_tagger_getResultLength( _Tagger ) != _WordsCount)" );
+            System.Diagnostics.Debug.Assert( Native.crf_tagger_getResultLength( _Tagger ) == wordsCount, "(native.crf_tagger_getResultLength( _Tagger ) != _WordsCount)" );
             for ( var i = 0; i < wordsCount; i++ )
             {
-                var ptr = native.crf_tagger_getResultValue( _Tagger, (uint) i );
+                var ptr = Native.crf_tagger_getResultValue( _Tagger, (uint) i );
 
                 var value = (byte*) ptr.ToPointer();
                 words[ i ].nerOutputType = NerExtensions.ToNerOutputType( value );
@@ -337,14 +330,6 @@ namespace lingvo.ner
 
             return (true);
         }
-        /*private void Uninit()
-        {
-            for ( var i = 0; i < _WordsCount; i++ )
-            {
-                (_PinnedWordsBufferPtrBase + i)->gcHandle.Free();
-            }
-            //_Words = null;
-        }*/
 
         private void AppendAttrValue( int wordIndex, CRFAttribute crfAttribute )
         {
@@ -419,68 +404,6 @@ namespace lingvo.ner
                 #endif
             }
         }
-        /*private void AppendAttrValue__previous( int wordIndex, CRFAttribute crfAttribute )
-        {
-            switch ( crfAttribute.AttributeName )
-            {
-                case 'w':
-                #region
-                {
-                    /*
-                    символы ':' '\'
-                    - их комментировать в поле "w", "\:" и "\\"
-                    * /
-                    var index = wordIndex + crfAttribute.Position;
-                    var word = _Words[ index ];
-                    fixed ( char* _base = word.valueOriginal )
-                    {
-                        switch ( *_base )
-                        {
-                            case COLON:
-                                *(_AttributeBufferPtr++) = SLASH;
-                                *(_AttributeBufferPtr++) = COLON;
-                            break;
-
-                            case SLASH:
-                                *(_AttributeBufferPtr++) = SLASH;
-                                *(_AttributeBufferPtr++) = SLASH;
-                            break;
-
-                            default:
-                                System.Diagnostics.Debug.Assert( word.valueOriginal.Length <= WORD_MAX_LENGTH, "!(word.valueOriginal.Length <= WORD_MAX_LENGTH)" );
-                                System.Diagnostics.Debug.Assert( word.length == word.valueOriginal.Length, "!(word.length == word.valueOriginal.Length)" );
-                                for ( int i = 0; i < WORD_MAX_LENGTH; i++ )
-                                {
-                                    var ch = *(_base + i);
-                                    if ( ch == '\0' )
-                                        break;
-                                    *(_AttributeBufferPtr++) = ch;
-                                }
-                            break;
-                        }
-                    }
-                }
-                #endregion
-                break;
-
-                case 'c':
-                #region
-                {
-                    var index = wordIndex + crfAttribute.Position;
-                    *(_AttributeBufferPtr++) = _Words[ index ].nerInputType.ToCrfChar();
-                }
-                #endregion
-                break;
-
-                case 'y':
-                #region
-                {
-                    *(_AttributeBufferPtr++) = 'O'; //NERINPUTTYPE_OTHER == "O"
-                }
-                #endregion
-                break;
-            }
-        }*/
 
         #region [.model-builder.]
         private void AppendAttrValue4ModelBuilder( int wordIndex, CRFAttribute crfAttribute )
@@ -571,10 +494,7 @@ namespace lingvo.ner
             _WordsCount_4ModelBuilder        = _Words4ModelBuilder.Count;
             _WordsCount_Minus1_4ModelBuilder = _WordsCount_4ModelBuilder - 1;
         }
-        public void EndGetNerAttributes4ModelBuilder()
-        {
-            _Words4ModelBuilder = null;
-        }
+        public void EndGetNerAttributes4ModelBuilder() => _Words4ModelBuilder = null;
         public List< string > GetNerAttributes4ModelBuilder( int wordIndex )
         {
             _Result4ModelBuilder.Clear();
