@@ -16,7 +16,7 @@ namespace lingvo.ner.webService
 		private readonly SemaphoreSlim                   _Semaphore;
         private readonly ConcurrentStack< NerProcessor > _Stack;
 
-        public ConcurrentFactory( NerProcessorConfig config, IConfig opts )
+        internal ConcurrentFactory( NerEnvironment env, Config opts )
 		{
 			var instanceCount = opts.CONCURRENT_FACTORY_INSTANCE_COUNT;
             if ( instanceCount <= 0 ) throw (new ArgumentException( nameof(instanceCount) ));
@@ -26,7 +26,7 @@ namespace lingvo.ner.webService
             _Stack     = new ConcurrentStack< NerProcessor >();
             for ( int i = 0; i < instanceCount; i++ )
 			{
-                _Stack.Push( new NerProcessor( config ) );
+                _Stack.Push( env.CreateNerProcessor() );
 			}			
 		}
         public void Dispose()
@@ -38,7 +38,7 @@ namespace lingvo.ner.webService
 			_Stack.Clear();
         }
 
-		public IConfig Config { get; }
+        internal Config Config { get; }
 
         public async Task< List< word_t[] > > Run_Details( string text, bool splitBySmiles )
         {

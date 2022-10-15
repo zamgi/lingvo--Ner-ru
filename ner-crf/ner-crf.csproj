@@ -24,7 +24,11 @@
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\crfsuite.net\crfsuite.net.csproj" />
     <ProjectReference Include="..\lingvo.core\lingvo.core.csproj" />

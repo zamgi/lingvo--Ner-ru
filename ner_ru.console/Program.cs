@@ -1,24 +1,6 @@
 ﻿using System;
-using System.Configuration;
 
-using lingvo.sentsplitting;
 using lingvo.tokenizing;
-
-namespace lingvo
-{
-    /// <summary>
-    /// 
-    /// </summary>
-    internal static class Config
-    {
-        public static readonly string URL_DETECTOR_RESOURCES_XML_FILENAME  = ConfigurationManager.AppSettings[ "URL_DETECTOR_RESOURCES_XML_FILENAME"  ];
-        public static readonly string SENT_SPLITTER_RESOURCES_XML_FILENAME = ConfigurationManager.AppSettings[ "SENT_SPLITTER_RESOURCES_XML_FILENAME" ];
-        public static readonly string TOKENIZER_RESOURCES_XML_FILENAME     = ConfigurationManager.AppSettings[ "TOKENIZER_RESOURCES_XML_FILENAME" ];
-        public static readonly string NER_MODEL_FILENAME                   = ConfigurationManager.AppSettings[ "NER_MODEL_FILENAME" ];
-        public static readonly string NER_TEMPLATE_FILENAME                = ConfigurationManager.AppSettings[ "NER_TEMPLATE_FILENAME" ];
-        public static readonly LanguageTypeEnum LANGUAGE_TYPE              = LanguageTypeEnum.Ru;
-    }
-}
 
 namespace lingvo.ner
 {
@@ -39,7 +21,7 @@ namespace lingvo.ner
             catch ( Exception ex )
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine( Environment.NewLine + ex + Environment.NewLine );
+                Console.WriteLine( ex );
                 Console.ResetColor();
             }
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -47,26 +29,15 @@ namespace lingvo.ner
             Console.ReadLine();
         }
 
-        private static NerProcessorConfig CreateNerProcessorConfig()
+        private static void ProcessText( string text )
         {
-            var sentSplitterConfig = new SentSplitterConfig( Config.SENT_SPLITTER_RESOURCES_XML_FILENAME, Config.URL_DETECTOR_RESOURCES_XML_FILENAME );
-            var config = new NerProcessorConfig( Config.TOKENIZER_RESOURCES_XML_FILENAME, Config.LANGUAGE_TYPE, sentSplitterConfig )
-            {
-                ModelFilename    = Config.NER_MODEL_FILENAME,
-                TemplateFilename = Config.NER_TEMPLATE_FILENAME,
-            };
-            return (config);
-        }
+            using var env = NerEnvironment.Create( LanguageTypeEnum.Ru );
 
-        private static void ProcessText( string text, bool splitBySmiles = true )
-        {
-            var config = CreateNerProcessorConfig();
-
-            using ( var nerProcessor = new NerProcessor( config ) )
+            using ( var nerProcessor = env.CreateNerProcessor() )
             {
                 Console.WriteLine( "\r\n-------------------------------------------------\r\n text: '" + text + '\'' );
 
-                var result = nerProcessor.Run( text, splitBySmiles );
+                var result = nerProcessor.Run( text, splitBySmiles: true );
 
                 Console.WriteLine( "-------------------------------------------------\r\n ner-entity-count: " + result.Count + Environment.NewLine );
                 foreach ( var word in result )
