@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
+
 namespace lingvo.crfsuite
-{   
-	/// <summary>
+{
+    /// <summary>
     /// N-грамма
-	/// </summary>
+    /// </summary>
     unsafe public sealed class CRFNgram : IDisposable
     {
-        private readonly GCHandle _GCHandle;
-        private char*             _AttributesHeaderBase;
+        private GCHandle _GCHandle;
+        private char*    _AttributesHeaderBase;
 
 		/// <summary>
 		/// .ctor()
 		/// </summary>
-        /// <param name="crfAttributes">Составные части N-граммы</param>
-		public CRFNgram( CRFAttribute[] crfAttributes )
+        /// <param name="attrs">Составные части N-граммы</param>
+		public CRFNgram( CRFAttribute[] attrs )
         {
-            CRFAttributes = crfAttributes;
+            CRFAttributes = attrs;
 
             var attrs_len = CRFAttributes.Length;
             switch ( attrs_len )
@@ -163,64 +164,19 @@ namespace lingvo.crfsuite
         /// <summary>
         /// Составные части N-граммы
         /// </summary>
-        public readonly CRFAttribute[] CRFAttributes;
-        /// <summary>
-        /// 
-        /// </summary>
-        public readonly int CRFAttributesLength;
+        public CRFAttribute[] CRFAttributes       { [M(O.AggressiveInlining)] get; }
+        public int            CRFAttributesLength { [M(O.AggressiveInlining)] get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_0
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_1
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_2
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_3
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_4
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public CRFAttribute CRFAttribute_5
-        {
-            get;
-            private set;
-        }
+        public CRFAttribute CRFAttribute_0 { [M(O.AggressiveInlining)] get; }
+        public CRFAttribute CRFAttribute_1 { [M(O.AggressiveInlining)] get; }
+        public CRFAttribute CRFAttribute_2 { [M(O.AggressiveInlining)] get; }
+        public CRFAttribute CRFAttribute_3 { [M(O.AggressiveInlining)] get; }
+        public CRFAttribute CRFAttribute_4 { [M(O.AggressiveInlining)] get; }
+        public CRFAttribute CRFAttribute_5 { [M(O.AggressiveInlining)] get; }
 
-        public readonly string AttributesHeader;
-        public readonly int    AttributesHeaderLength;
-        unsafe public char* CopyAttributesHeaderChars( char* attributeBuffer )
+        public string AttributesHeader       { [M(O.AggressiveInlining)] get; }
+        public int    AttributesHeaderLength { [M(O.AggressiveInlining)] get; }
+        [M(O.AggressiveInlining)] unsafe public char* CopyAttributesHeaderChars( char* attributeBuffer )
         {
             for ( var ptr = _AttributesHeaderBase; ; ptr++ )
             {
@@ -231,7 +187,7 @@ namespace lingvo.crfsuite
             }
             return (attributeBuffer);
         }
-        unsafe public byte* CopyAttributesHeaderChars( byte* attributeBuffer )
+        [M(O.AggressiveInlining)] unsafe public byte* CopyAttributesHeaderChars( byte* attributeBuffer )
         {
             for ( var ptr = _AttributesHeaderBase; ; ptr++ )
             {
@@ -243,7 +199,7 @@ namespace lingvo.crfsuite
             return (attributeBuffer);
         }
 
-        public bool CanTemplateBeApplied( int wordIndex, int wordsCount )
+        [M(O.AggressiveInlining)] public bool CanTemplateBeApplied( int wordIndex, int wordsCount )
         {
             foreach ( CRFAttribute crfAttribute in CRFAttributes )
             {
@@ -256,9 +212,6 @@ namespace lingvo.crfsuite
             return (true);
         }
 
-        public override string ToString()
-        {
-            return (AttributesHeader);
-        }
+        public override string ToString() => AttributesHeader;
     }
 }

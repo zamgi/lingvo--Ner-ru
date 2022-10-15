@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace lingvo.tokenizing
+﻿namespace lingvo.tokenizing
 {
     /// <summary>
     /// 

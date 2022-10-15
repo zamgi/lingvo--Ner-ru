@@ -1,7 +1,4 @@
-﻿using System;
-
-using lingvo.core;
-using lingvo.tokenizing;
+﻿using lingvo.tokenizing;
 
 namespace lingvo.postagger
 {
@@ -10,17 +7,17 @@ namespace lingvo.postagger
     /// </summary>
     public struct PosTaggerInputTypeResult
     {
-        private PosTaggerInputTypeResult( PosTaggerInputType _posTaggerInputType )
+        private PosTaggerInputTypeResult( PosTaggerInputType ptt )
         {
-            posTaggerInputType                                   = _posTaggerInputType;
+            posTaggerInputType                                   = ptt;
             posTaggerExtraWordType                               = PosTaggerExtraWordType.__DEFAULT__;
             posTaggerLastValueUpperInNumeralChain                = null;
             posTaggerLastValueUpperInNumeralChainIsValueOriginal = false;
         }
-        private PosTaggerInputTypeResult( PosTaggerInputType _posTaggerInputType, PosTaggerExtraWordType _posTaggerExtraWordType )
+        private PosTaggerInputTypeResult( PosTaggerInputType ptt, PosTaggerExtraWordType extraWordType )
         {
-            posTaggerInputType                                   = _posTaggerInputType;
-            posTaggerExtraWordType                               = _posTaggerExtraWordType;
+            posTaggerInputType                                   = ptt;
+            posTaggerExtraWordType                               = extraWordType;
             posTaggerLastValueUpperInNumeralChain                = null;
             posTaggerLastValueUpperInNumeralChainIsValueOriginal = false;
         }
@@ -41,19 +38,9 @@ namespace lingvo.postagger
         public static readonly PosTaggerInputTypeResult IsAbbreviation = new PosTaggerInputTypeResult( PosTaggerInputType.O, PosTaggerExtraWordType.Abbreviation );
         public static readonly PosTaggerInputTypeResult IsPunctuation  = new PosTaggerInputTypeResult( PosTaggerInputType.O, PosTaggerExtraWordType.Punctuation  );
 
-        public static PosTaggerInputTypeResult CreateNum( string _posTaggerLastValueUpperInNumeralChain )
-        {
-            var r = new PosTaggerInputTypeResult( PosTaggerInputType.Num )
-            {
-                posTaggerLastValueUpperInNumeralChain = _posTaggerLastValueUpperInNumeralChain,
-            };
-            return (r);
-        }
+        public static PosTaggerInputTypeResult CreateNum( string _posTaggerLastValueUpperInNumeralChain ) => new PosTaggerInputTypeResult( PosTaggerInputType.Num ) { posTaggerLastValueUpperInNumeralChain = _posTaggerLastValueUpperInNumeralChain, };
         private static readonly PosTaggerInputTypeResult _Num_1 = new PosTaggerInputTypeResult( PosTaggerInputType.Num ) { posTaggerLastValueUpperInNumeralChainIsValueOriginal = true };
-        public static PosTaggerInputTypeResult CreateNum()
-        {
-            return (_Num_1);
-        }
+        public static PosTaggerInputTypeResult CreateNum() => _Num_1;
     }
 
     /// <summary>
@@ -64,10 +51,7 @@ namespace lingvo.postagger
         /// <summary>
         /// word.valueOriginal & word.valueUpper are used
         /// </summary>
-        /// <param name="_base"></param>
-        /// <param name="length"></param>
         /// <param name="word">word.valueOriginal & word.valueUpper are used</param>
-        /// <returns></returns>
         unsafe PosTaggerInputTypeResult GetResult( char* _base, int length, word_t word ); //string valueUpper );
     }
 
@@ -84,12 +68,9 @@ namespace lingvo.postagger
     /// </summary>
     internal sealed class Dummy_PosTaggerInputTypeProcessor : IPosTaggerInputTypeProcessor
     {
-        public static readonly Dummy_PosTaggerInputTypeProcessor Instance = new Dummy_PosTaggerInputTypeProcessor();
+        public static Dummy_PosTaggerInputTypeProcessor Inst { get; } = new Dummy_PosTaggerInputTypeProcessor();
         private Dummy_PosTaggerInputTypeProcessor() { }
 
-        public unsafe PosTaggerInputTypeResult GetResult( char* _base, int length, word_t word ) //, string valueUpper )
-        {
-            return (PosTaggerInputTypeResult.O);
-        }
+        public unsafe PosTaggerInputTypeResult GetResult( char* _base, int length, word_t word ) => PosTaggerInputTypeResult.O;
     }
 }

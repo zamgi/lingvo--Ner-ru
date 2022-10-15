@@ -1,8 +1,4 @@
-﻿using System;
-
-using lingvo.core;
-
-namespace lingvo.ner
+﻿namespace lingvo.ner
 {
     /// <summary>
     /// 
@@ -25,12 +21,9 @@ namespace lingvo.ner
     /// </summary>
     internal sealed class Dummy_NerInputTypeProcessor : INerInputTypeProcessor
     {
-        public static readonly Dummy_NerInputTypeProcessor Instance = new Dummy_NerInputTypeProcessor();
+        public static Dummy_NerInputTypeProcessor Inst { get; } = new Dummy_NerInputTypeProcessor();
         private Dummy_NerInputTypeProcessor() { }
 
-        public unsafe NerInputType GetNerInputType( char* _base, int length )
-        {
-            return (NerInputType.O);
-        }
+        public unsafe NerInputType GetNerInputType( char* _base, int length ) => NerInputType.O;
     }
 }

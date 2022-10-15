@@ -1,27 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner_ru.web.demo", "ner_ru.web.demo\ner_ru.web.demo.csproj", "{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "captcha", "captcha\captcha.csproj", "{ADA45B0D-9218-4E16-880D-825D022A5684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "captcha", "captcha\captcha.csproj", "{ADA45B0D-9218-4E16-880D-825D022A5684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lingvo.core", "lingvo.core\lingvo.core.csproj", "{A64092D5-B7CC-4AAB-8CC2-571882DA64D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[lib]", "[lib]", "{3CB88523-7F8A-4DE8-8020-7C2B0F54F269}"
-	ProjectSection(SolutionItems) = preProject
-		[lib]\log4net.dll = [lib]\log4net.dll
-		[lib]\Newtonsoft.Json.dll = [lib]\Newtonsoft.Json.dll
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "crfsuite.net", "crfsuite.net\crfsuite.net.csproj", "{0E34915B-130F-40F4-B0BC-F543ABE52CEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lingvo.core", "lingvo.core\lingvo.core.csproj", "{A64092D5-B7CC-4AAB-8CC2-571882DA64D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sent-splitting", "sent-splitting\sent-splitting.csproj", "{945A3CAA-EF28-4344-8DBB-7EBEB4BE0301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crfsuite.net", "crfsuite.net\crfsuite.net.csproj", "{0E34915B-130F-40F4-B0BC-F543ABE52CEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ner-crf", "ner-crf\ner-crf.csproj", "{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentSplitter", "SentSplitter\SentSplitter.csproj", "{945A3CAA-EF28-4344-8DBB-7EBEB4BE0301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ner_ru.console", "ner_ru.console\ner_ru.console.csproj", "{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner-crf.NET", "ner-crf.net\ner-crf.NET.csproj", "{97B9B41C-DABF-4D93-B111-85B8D86ACBA6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ner_ru.console.demo", "ner_ru.console.demo\ner_ru.console.demo.csproj", "{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ner_ru.webService", "ner_ru.webService\ner_ru.webService.csproj", "{C8A54A3B-86AE-4403-82E4-011752208647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCBDCD3D-78BE-4F9B-81FE-2A208499F597}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADA45B0D-9218-4E16-880D-825D022A5684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADA45B0D-9218-4E16-880D-825D022A5684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA45B0D-9218-4E16-880D-825D022A5684}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,8 +47,15 @@ Global
 		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565D8931-19DD-4AC3-8B11-22ED3FBC5BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8A54A3B-86AE-4403-82E4-011752208647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8A54A3B-86AE-4403-82E4-011752208647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8A54A3B-86AE-4403-82E4-011752208647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8A54A3B-86AE-4403-82E4-011752208647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D552871D-D686-4343-B827-6B5255965A08}
 	EndGlobalSection
 EndGlobal

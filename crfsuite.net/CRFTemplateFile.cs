@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
+
 namespace lingvo.crfsuite
 {
     /// <summary>
@@ -12,9 +15,18 @@ namespace lingvo.crfsuite
         /// <summary>
         /// 
         /// </summary>
-        private struct index_count_t : IEqualityComparer< index_count_t >
+        private readonly struct index_count_t
         {
-            public static readonly index_count_t Instance = new index_count_t();
+            /// <summary>
+            /// 
+            /// </summary>
+            public sealed class EqualityComparer : IEqualityComparer< index_count_t >
+            {
+                public EqualityComparer() { }
+
+                public bool Equals( index_count_t x, index_count_t y ) => (x.Index == y.Index) && (x.Count == y.Count);
+                public int GetHashCode( index_count_t obj ) => (obj.Index.GetHashCode() ^ obj.Count.GetHashCode());
+            }
 
             public index_count_t( int index, int count )
             {
@@ -22,22 +34,13 @@ namespace lingvo.crfsuite
                 Count = count;
             }
 
-            public int Index;
-            public int Count;
-
-            public bool Equals( index_count_t x, index_count_t y )
-            {
-                return ((x.Index == y.Index) && (x.Count == y.Count));
-            }
-            public int GetHashCode( index_count_t obj )
-            {
-                return (Index.GetHashCode() ^ Count.GetHashCode());
-            }
+            public int Index { [M(O.AggressiveInlining)] get; }
+            public int Count { [M(O.AggressiveInlining)] get; }
         }
 
-        private readonly int _MinCrfAttributePosition;
-        private readonly int _MaxCrfAttributePosition;
-        private readonly Dictionary< index_count_t, CRFNgram[] > _Dictionary;
+        private int _MinCrfAttributePosition;
+        private int _MaxCrfAttributePosition;
+        private Dictionary< index_count_t, CRFNgram[] > _Dictionary;
 
         /// <summary>
         /// Конструктор шаблона для построения входных данных SRFSuitNER
@@ -57,35 +60,26 @@ namespace lingvo.crfsuite
             _MinCrfAttributePosition = positions.Min();
             _MaxCrfAttributePosition = positions.Max();
 
-            _Dictionary = new Dictionary< index_count_t, CRFNgram[] >( index_count_t.Instance );
+            _Dictionary = new Dictionary< index_count_t, CRFNgram[] >( new index_count_t.EqualityComparer() );
 		}
 
 		/// <summary>
         /// // Наименования столбцов преобразованного входного файла
 		/// </summary>
-		public char[] ColumnNames
-		{
-            get;
-            private set;
-		}
+		public char[] ColumnNames { [M(O.AggressiveInlining)] get; }
 
 		/// <summary>
         /// // шаблоны N-грамм
 		/// </summary>
-        public CRFNgram[] CRFNgrams
-        {
-            get;
-            private set;
-        }        
+        public CRFNgram[] CRFNgrams { [M(O.AggressiveInlining)] get; }
 
-        public CRFNgram[] GetCRFNgramsWhichCanTemplateBeApplied( int wordIndex, int wordsCount )
+        [M(O.AggressiveInlining)] public CRFNgram[] GetCRFNgramsWhichCanTemplateBeApplied( int wordIndex, int wordsCount )
         {
             var i1 = wordIndex + _MinCrfAttributePosition;                    if ( 0 < i1 ) i1 = 0;
             var i2 = wordsCount - (wordIndex + _MaxCrfAttributePosition) - 1; if ( 0 < i2 ) i2 = 0;
             var wordIndexAndCountTuple = new index_count_t( i1, i2 );
 
-            CRFNgram[] ngrams;
-            if ( !_Dictionary.TryGetValue( wordIndexAndCountTuple, out ngrams ) )
+            if ( !_Dictionary.TryGetValue( wordIndexAndCountTuple, out var ngrams ) )
             {
                 var lst = new List< CRFNgram >();
                 foreach ( var crfNgram in CRFNgrams )
@@ -103,18 +97,17 @@ namespace lingvo.crfsuite
         }
 
 
-        private static void CheckTemplate( char[] _columnNames, CRFNgram[] _crfNgrams )
+        private static void CheckTemplate( char[] columnNames, CRFNgram[] crfNgrams )
         {
-            var columnNames = new HashSet< char >( _columnNames );
+            var columnNamesHS = new HashSet< char >( columnNames );
 
-            foreach ( CRFNgram ngram in _crfNgrams )
+            foreach ( var ngram in crfNgrams )
             {
-                foreach ( CRFAttribute crfAttribute in ngram.CRFAttributes )
+                foreach ( var ca in ngram.CRFAttributes )
                 {
-                    if ( !columnNames.Contains( crfAttribute.AttributeName ) )
+                    if ( !columnNamesHS.Contains( ca.AttributeName ) )
                     {
-                        throw (new Exception( "Аттрибут '" + crfAttribute.AttributeName + "' не содержащится в названиях столбцов CRF-файла-шаблона: '" +
-                                             string.Join( "', '", _columnNames.Select( c => c.ToString() ) ) + '\'' ));
+                        throw (new Exception( $"Аттрибут '{ca.AttributeName}' не содержащится в названиях столбцов CRF-файла-шаблона: '{string.Join( "', '", columnNames.Select( c => c.ToString() ) )}'" ));
                     }
                 }
             }

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+
+using lingvo.morphology;
+using lingvo.ner;
+using lingvo.postagger;
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace lingvo.tokenizing
 {
-    using lingvo.ner;
-    using lingvo.postagger;
-    using lingvo.syntax;
-    using lingvo.morphology;
-
     /// <summary>
     /// 
     /// </summary>
@@ -36,19 +36,11 @@ namespace lingvo.tokenizing
         public NerOutputType nerOutputType;
 
         //next ner-word in chain
-        public word_t nerNext
-        {
-            get;
-            private set;
-        }
+        public word_t nerNext { [M(O.AggressiveInlining)] get; [M(O.AggressiveInlining)] private set; }
         //previous ner-word in chain
-        public word_t nerPrev
-        {
-            get;
-            private set;
-        }
+        public word_t nerPrev { [M(O.AggressiveInlining)] get; [M(O.AggressiveInlining)] private set; }
 
-        public void   SetNextPrev( word_t next, NerOutputType nerOutputType )
+        [M(O.AggressiveInlining)] public void SetNextPrev( word_t next, NerOutputType nerOutputType )
         {
             nerNext = next;
             next.nerPrev = this;
@@ -57,22 +49,10 @@ namespace lingvo.tokenizing
 
             this.nerOutputType = next.nerOutputType = nerOutputType;
         }
-        public bool   IsFirstWordInNerChain
-        {
-            get { return (nerNext != null && nerPrev == null); }
-        }
-        public bool   IsWordInNerChain
-        {
-            get { return (nerNext != null || nerPrev != null); }
-        }
-        public bool   HasNerPrevWord
-        {
-            get { return (nerPrev != null); }
-        }
-        public string GetNerValue()
-        {
-            return (GetNerValue( new StringBuilder() ));
-        }
+        public bool   IsFirstWordInNerChain { [M(O.AggressiveInlining)] get => (nerNext != null && nerPrev == null); }
+        public bool   IsWordInNerChain      { [M(O.AggressiveInlining)] get => (nerNext != null || nerPrev != null); }
+        public bool   HasNerPrevWord        { [M(O.AggressiveInlining)] get => (nerPrev != null); }
+        public string GetNerValue() => GetNerValue( new StringBuilder() );
         public string GetNerValue( StringBuilder sb )
         {
             if ( nerNext != null )

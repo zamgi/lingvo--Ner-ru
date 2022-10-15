@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace lingvo.crfsuite
 {
@@ -17,12 +18,12 @@ namespace lingvo.crfsuite
         /// <summary>
         /// название аттрибута
         /// </summary>
-        public readonly char AttributeName;
+        public char AttributeName { [M(O.AggressiveInlining)] get; }
 
         /// <summary>
         /// индекс позиции аттрибута
         /// </summary>
-        public readonly int Position;
+        public int Position { [M(O.AggressiveInlining)] get; }
         /// <summary>
         /// Position + 1 => comfortable for MorphoAmbiguityResolver
         /// </summary>
@@ -31,11 +32,8 @@ namespace lingvo.crfsuite
         /// <summary>
         /// 
         /// </summary>
-        public readonly int ColumnIndex;
+        public int ColumnIndex { [M(O.AggressiveInlining)] get; }
 
-        public override string ToString()
-        {
-            return ('[' + AttributeName + ":" + Position + "], position: " + Position + ", column-index: " + ColumnIndex);
-        }
+        public override string ToString() => $"[{AttributeName}:{Position}], column-index: {ColumnIndex}";
 	};
 }

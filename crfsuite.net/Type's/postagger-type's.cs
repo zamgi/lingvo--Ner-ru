@@ -1,4 +1,5 @@
-﻿using System;
+﻿using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace lingvo.postagger
 {
@@ -137,11 +138,8 @@ namespace lingvo.postagger
             }
         }
 
-        public static char ToCrfChar( this PosTaggerInputType  posTaggerInputType  )
-        {
-            return ((char) posTaggerInputType.ToCrfByte());
-        }
-        public static byte ToCrfByte( this PosTaggerInputType  posTaggerInputType  )
+        [M(O.AggressiveInlining)] public static char ToCrfChar( this PosTaggerInputType  posTaggerInputType  ) => ((char) posTaggerInputType.ToCrfByte());
+        [M(O.AggressiveInlining)] public static byte ToCrfByte( this PosTaggerInputType  posTaggerInputType  )
         {
             switch ( posTaggerInputType )    
             {
@@ -160,11 +158,8 @@ namespace lingvo.postagger
             }
         }
 
-        public static char ToCrfChar( this PosTaggerOutputType posTaggerOutputType )
-        {
-            return ((char) posTaggerOutputType.ToCrfByte());
-        }
-        public static byte ToCrfByte( this PosTaggerOutputType posTaggerOutputType )
+        [M(O.AggressiveInlining)] public static char ToCrfChar( this PosTaggerOutputType posTaggerOutputType ) => ((char) posTaggerOutputType.ToCrfByte());
+        [M(O.AggressiveInlining)] public static byte ToCrfByte( this PosTaggerOutputType posTaggerOutputType )
         {
             switch ( posTaggerOutputType )    
             {
@@ -196,7 +191,7 @@ namespace lingvo.postagger
             }
         }
 
-        unsafe public static PosTaggerOutputType ToPosTaggerOutputType( byte* value )
+        [M(O.AggressiveInlining)] unsafe public static PosTaggerOutputType ToPosTaggerOutputType( byte* value )
         {
             switch ( *value )
             {
@@ -228,7 +223,7 @@ namespace lingvo.postagger
             }
         }
 
-        #region [.previous. commented.]
+        #region comm. prev.
         /*unsafe public static PosTaggerOutputType ToPosTaggerOutputType( byte* value )
         {
             switch ( ((char) *value++) )

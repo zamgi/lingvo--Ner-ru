@@ -1,0 +1,10 @@
+/obj/*
+/bin/runtimes/*
+/bin/ref/*
+/bin/*.exe
+/bin/*.dll
+/bin/*.so
+/bin/*.json
+/bin/*.pdb
+/bin/*.config
+*.csproj.user

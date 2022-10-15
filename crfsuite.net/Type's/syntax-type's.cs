@@ -1,6 +1,7 @@
-﻿using System;
+﻿using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace lingvo.syntax
+namespace lingvo.postagger
 {
     #region [.description.]
     /*
@@ -86,12 +87,9 @@ namespace lingvo.syntax
     /// </summary>
     public static class SyntaxExtensions
     {
-        public static string ToText( this SyntaxRoleType syntaxRoleType )
-        {
-            return (syntaxRoleType.ToString());
-        }
+        public static string ToText( this SyntaxRoleType syntaxRoleType ) => syntaxRoleType.ToString();
 
-        public static char ToCrfChar( this SyntaxRoleType syntaxRoleType )
+        [M(O.AggressiveInlining)] public static char ToCrfChar( this SyntaxRoleType syntaxRoleType )
         {
             switch ( syntaxRoleType )
             {
@@ -131,12 +129,9 @@ namespace lingvo.syntax
                          return ('O');
             }
         }
-        public static byte ToCrfByte( this SyntaxRoleType syntaxRoleType )
-        {
-            return ((byte) syntaxRoleType.ToCrfChar());
-        }
+        [M(O.AggressiveInlining)] public static byte ToCrfByte( this SyntaxRoleType syntaxRoleType ) => ((byte) syntaxRoleType.ToCrfChar());
 
-        unsafe public static SyntaxRoleType ToSyntaxRoleType( byte* value )
+        [M(O.AggressiveInlining)] unsafe public static SyntaxRoleType ToSyntaxRoleType( byte* value )
         {
             switch ( *value )
             {

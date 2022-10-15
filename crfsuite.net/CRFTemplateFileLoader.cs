@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace lingvo.crfsuite
@@ -27,18 +26,20 @@ namespace lingvo.crfsuite
         private static readonly Regex _FieldsRegex = new Regex("fields\\s*=\\s*'(?<" + Fields + ">[^']*)'", RegexOptions.IgnoreCase);
         #endregion
 
-        ///Загрузить файл шаблона
-		///@param filePath Путь к файлу шаблона
-		///@return файл шаблона
+        /// <summary>
+        /// Загрузить файл шаблона
+        /// </summary>
+        /// <param name="filePath">Путь к файлу шаблона</param>
+        /// <returns>файл шаблона</returns>
         public static CRFTemplateFile Load( string filePath )
 		{
 			using ( var sr = new StreamReader( filePath ) )
             {
-			    string fileString = sr.ReadToEnd();
+			    var text = sr.ReadToEnd();
 
-			    char[]                  columnNames           = ExtractColumnNames( fileString );
-                Dictionary< char, int > columnIndexDictionary = CreateColumnIndexDictionary( columnNames );
-			    CRFNgram[]              attributeTemplates    = ExtractAttributeTemplates( fileString, columnIndexDictionary );
+			    var columnNames           = ExtractColumnNames( text );
+                var columnIndexDictionary = CreateColumnIndexDictionary( columnNames );
+			    var attributeTemplates    = ExtractAttributeTemplates( text, columnIndexDictionary );
 
 			    return (new CRFTemplateFile( columnNames, attributeTemplates ));
             }
@@ -47,29 +48,30 @@ namespace lingvo.crfsuite
         {
             var crfTemplateFile = Load( filePath );
 
-            if ( allowedColumnNames != null && allowedColumnNames.Length != 0 )
+            if ( (allowedColumnNames != null) && (allowedColumnNames.Length != 0) )
             {
                 var hs = new HashSet< char >( allowedColumnNames );
                 foreach ( var columnName in crfTemplateFile.ColumnNames )
                 {
                     if ( !hs.Contains( columnName ) )
                     {
-                        throw (new InvalidDataException( "Invalid column-name: '" + columnName + 
-                            "', allowed only '" + string.Join( ",", allowedColumnNames ) + "'" ));
+                        throw (new InvalidDataException( $"Invalid column-name: '{columnName}', allowed only '{string.Join( ",", allowedColumnNames )}'" ));
                     }
                 }
             }
             return (crfTemplateFile);
         }
 
-        // Извлечь шаблоны аттрибутов
-        // @param fileString - Содержимое файла-шаблона
-        // @return - Шаблоны аттрибутов
-        private static CRFNgram[] ExtractAttributeTemplates( string fileString, Dictionary< char, int > columnIndexDictionary )
+        /// <summary>
+        /// Извлечь шаблоны аттрибутов
+        /// </summary>
+        /// <param name="text">Содержимое файла-шаблона</param>
+        /// <returns>Шаблоны аттрибутов</returns>
+        private static CRFNgram[] ExtractAttributeTemplates( string text, Dictionary< char, int > columnIndexDictionary )
         {
-            var attributeTemplateStrings = ExtractAttributeTemplateStrings( fileString );
-            var split_chars = new[] { ',' };
-            var attributeTemplates = new List< CRFNgram >( attributeTemplateStrings.Length );
+            var attributeTemplateStrings = ExtractAttributeTemplateStrings( text );
+            var split_chars              = new[] { ',' };
+            var attributeTemplates       = new List< CRFNgram >( attributeTemplateStrings.Length );
             foreach ( var str in attributeTemplateStrings )
             {
                 MatchCollection matchCollection = _TemplateRegex.Matches( str );
@@ -80,16 +82,16 @@ namespace lingvo.crfsuite
                 foreach ( Match currentMatch in matchCollection )
                 {
                     var oneTemplate = currentMatch.Groups[ Template ].Value;
-                    var pair = oneTemplate.Split( split_chars );
+                    var pair        = oneTemplate.Split( split_chars );
 
                     var attributeName = ParseAttributeName( pair[ 0 ] );
                     if ( attributeName.Length != 1 )
                     {
-                        throw (new InvalidDataException( "attribute-name is not valid, must be one-char: '" + attributeName + '\'' ));
+                        throw (new InvalidDataException( $"Attribute-name is not valid, must be one-char: '{attributeName}'" ));
                     }
                     var attributeNameChar = attributeName[ 0 ]; //char.ToUpperInvariant( attributeName[ 0 ] );
-                    var position      = Int32.Parse( pair[ 1 ] );
-                    var columnIndex   = columnIndexDictionary[ attributeNameChar ];                    
+                    var position          = int.Parse( pair[ 1 ] );
+                    var columnIndex       = columnIndexDictionary[ attributeNameChar ];                    
 
                     attributeTemplate.Add( new CRFAttribute( attributeNameChar, position, columnIndex ) );
                 }
@@ -98,42 +100,48 @@ namespace lingvo.crfsuite
             return (attributeTemplates.ToArray());
         }
 
-        // Извлечь название аттрибута
-        // @param attrStr - Строка, содержащая название аттрибута
-        // @return - Название аттрибута
-        private static string ParseAttributeName( string attrStr )
+        /// <summary>
+        /// Извлечь название аттрибута
+        /// </summary>
+        /// <param name="attr">Строка, содержащая название аттрибута</param>
+        /// <returns>Название аттрибута</returns>
+        private static string ParseAttributeName( string attr )
         {
-            int startIndex = attrStr.IndexOf( '\'' ) + 1;
-            int endIndex   = attrStr.IndexOf( '\'', startIndex);
-            return (attrStr.Substring( startIndex, endIndex - startIndex ));
+            var startIndex = attr.IndexOf( '\'' ) + 1;
+            var endIndex   = attr.IndexOf( '\'', startIndex);
+            return (attr.Substring( startIndex, endIndex - startIndex ));
         }
 
-        // Извлечь названия столбцов
-        // @param fileString - Содержимое файла-шаблона
-        // @return - Названия столбцов
-        private static char[] ExtractColumnNames( string fileString )
+        /// <summary>
+        /// Извлечь названия столбцов
+        /// </summary>
+        /// <param name="text">Содержимое файла-шаблона</param>
+        /// <returns>Названия столбцов</returns>
+        private static char[] ExtractColumnNames( string text )
         {
-            Match match = _FieldsRegex.Match( fileString );
-            var columnNames = match.Groups[ Fields ].Value.Split( ' ', '\t', '\n' );
+            Match match = _FieldsRegex.Match( text );
+            var columnNames     = match.Groups[ Fields ].Value.Split( ' ', '\t', '\n' );
             var columnNameChars = new char[ columnNames.Length ];
             for ( int i = 0; i < columnNames.Length; i++ )
             {
                 var columnName = columnNames[ i ];
                 if ( columnName.Length != 1 )
                 {
-                    throw (new InvalidDataException( "column-name is not valid, must be one-char: '" + columnName + '\'' ));
+                    throw (new InvalidDataException( $"Column-name is not valid, must be one-char: '{columnName}'" ));
                 }
                 columnNameChars[ i ] = columnName[ 0 ];
             }
             return (columnNameChars);
         }
 
-        // Извлечь строки, соответствующие шаблонам аттрибутов
-        // @param fileString - Содержимое файла-шаблона
-        // @return - Строки, соответствующие шаблонам аттрибутов
-        private static string[] ExtractAttributeTemplateStrings( string fileString )
+        /// <summary>
+        /// Извлечь строки, соответствующие шаблонам аттрибутов
+        /// </summary>
+        /// <param name="text">Содержимое файла-шаблона</param>
+        /// <returns>Строки, соответствующие шаблонам аттрибутов</returns>
+        private static string[] ExtractAttributeTemplateStrings( string text )
         {
-            Match templatesMatch = _TemplatesRegex.Match( fileString );
+            Match templatesMatch = _TemplatesRegex.Match( text );
             string templates = templatesMatch.Groups[ Templates ].Value;
 
             templates = Regex.Replace( templates, "\\s*\\(\\s*\\(\\s*", "(" );
@@ -147,12 +155,10 @@ namespace lingvo.crfsuite
 		/// </summary>
         private static Dictionary< char, int > CreateColumnIndexDictionary( char[] columnNames )
 		{
-            var dict = new Dictionary< char, int >();
-			var index = 0;
-            foreach ( var columnName in columnNames )
+            var dict = new Dictionary< char, int >( columnNames.Length );
+            for ( var i = columnNames.Length - 1; 0 <= i; i--  )
 			{
-				dict.Add( columnName, index );
-				index++;
+				dict[ columnNames[ i ] ] = i;
 			}
             return (dict);
 		}

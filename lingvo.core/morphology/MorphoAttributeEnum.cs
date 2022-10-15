@@ -5,8 +5,7 @@ namespace lingvo.morphology
     /// <summary>
     /// морфологическое совойство
     /// </summary>
-    [Flags]
-    public enum MorphoAttributeEnum : ulong
+    [Flags] public enum MorphoAttributeEnum : ulong
     {
         /// по умолчанию
         __UNDEFINED__ = 0x0UL,

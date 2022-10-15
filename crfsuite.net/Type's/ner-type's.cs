@@ -1,6 +1,7 @@
-﻿using System;
+﻿using lingvo.tokenizing;
 
-using lingvo.tokenizing;
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace lingvo.ner
 {
@@ -130,7 +131,7 @@ namespace lingvo.ner
             }
         }
 
-        public static char ToCrfChar( this NerInputType nerInputType )
+        [M(O.AggressiveInlining)] public static char ToCrfChar( this NerInputType nerInputType )
         {
             switch ( nerInputType )    
             {
@@ -155,7 +156,7 @@ namespace lingvo.ner
                          return ('O');
             }
         }
-        public static char ToCrfChar( this NerOutputType nerOutputType )
+        [M(O.AggressiveInlining)] public static char ToCrfChar( this NerOutputType nerOutputType )
         {
             switch ( nerOutputType )    
             {
@@ -170,7 +171,7 @@ namespace lingvo.ner
             }
         }
 
-        unsafe public static NerOutputType ToNerOutputType( byte* value )
+        [M(O.AggressiveInlining)] unsafe public static NerOutputType ToNerOutputType( byte* value )
         {
             switch ( ((char) *value++) )
             {
@@ -195,7 +196,7 @@ namespace lingvo.ner
             return (NerOutputType.O);
         }
 
-        public static string ToText( this BuildModelNerInputType buildModelNerInputType )
+        [M(O.AggressiveInlining)] public static string ToText( this BuildModelNerInputType buildModelNerInputType )
         {
             switch ( buildModelNerInputType )
             {
@@ -218,7 +219,7 @@ namespace lingvo.ner
                                                     return ("O");
             }
         }
-        public static BuildModelNerInputType ToBuildModelNerInputTypeB( this NerOutputType nerOutputType )
+        [M(O.AggressiveInlining)] public static BuildModelNerInputType ToBuildModelNerInputTypeB( this NerOutputType nerOutputType )
         {
             switch ( nerOutputType )
             {
@@ -231,7 +232,7 @@ namespace lingvo.ner
                                          return (BuildModelNerInputType.O);
             }
         }
-        public static BuildModelNerInputType ToBuildModelNerInputTypeI( this NerOutputType nerOutputType )
+        [M(O.AggressiveInlining)] public static BuildModelNerInputType ToBuildModelNerInputTypeI( this NerOutputType nerOutputType )
         {
             switch ( nerOutputType )
             {
@@ -245,7 +246,7 @@ namespace lingvo.ner
             }
         }        
 
-        #region [.previous. commented.]
+        #region comm. prev.
         /*public static string ToText( this NerInputType  nerInputType  )
         {
             switch ( nerInputType )    

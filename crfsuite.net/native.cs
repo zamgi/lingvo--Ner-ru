@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
+using CC = System.Runtime.InteropServices.CallingConvention;
+
 namespace lingvo.crfsuite
 {
     #region [.learner. not used.]
@@ -48,7 +52,7 @@ namespace lingvo.crfsuite
             var p = (int)Environment.OSVersion.Platform;
             return (p == 4) || (p == 6) || (p == 128);
         }
-        private static bool Isx64() => (IntPtr.Size == 8);
+        private static bool Isx64() => ( IntPtr.Size == 8);
 
         private const string DLL_WIN_x64 = "crfsuite_x64.dll";
         private const string DLL_WIN_x86 = "crfsuite_x86.dll";
@@ -137,109 +141,109 @@ namespace lingvo.crfsuite
 
         #region [.win.]
         #region [.x64.]
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_initialize_name)]
         private extern static IntPtr crf_tagger_initialize_win_x64( IntPtr/*string*/ name );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemSequence_name)]
         private extern static void crf_tagger_beginAddItemSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemAttribute_name)]
         private extern static void crf_tagger_beginAddItemAttribute_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttribute_name)]
         private extern static bool crf_tagger_addItemAttribute_win_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttributeNameOnly_name)]
         private extern static void crf_tagger_addItemAttributeNameOnly_win_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemAttribute_name)]
         private extern static void crf_tagger_endAddItemAttribute_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemSequence_name)]
         private extern static void crf_tagger_endAddItemSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_name)]
         private extern static void crf_tagger_tag_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_marginal_name)]
         private extern static double crf_tagger_tag_with_marginal_win_x64( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultLength_name)]
         private extern static uint crf_tagger_getResultLength_win_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_win_x64( IntPtr taggerWrapper, uint index );
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultMarginal_name)]
         private extern static double crf_tagger_getResultMarginal_win_x64( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_uninitialize_name)]
         private extern static void crf_tagger_uninitialize_win_x64( IntPtr taggerWrapper );
 
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_initialize_name)]
         private extern static IntPtr crf_tagger_ma_initialize_win_x64( IntPtr name );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_beginAddNgramSequence_name)]
         private extern static void crf_tagger_ma_beginAddNgramSequence_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_addNgramSequence_name)]
         private extern static void crf_tagger_ma_addNgramSequence_win_x64( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_endAddNgramSequence_name)]
         private extern static void crf_tagger_ma_endAddNgramSequence_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_setNgramValue_name)]
         private extern static void crf_tagger_ma_setNgramValue_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_tagNgram_with_probability_name)]
         private extern static double crf_tagger_ma_tagNgram_with_probability_win_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_getResultValue_name)]
         private extern static IntPtr crf_tagger_ma_getResultValue_win_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport(DLL_WIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_uninitialize_name)]
         private extern static void crf_tagger_ma_uninitialize_win_x64( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
         /*
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_initialize_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_initialize_name)]
         private extern static IntPtr crf_learner_initialize_win_x64( IntPtr modelFilename, AlgorithmEnum algorithmEnum );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemSequence_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemSequence_name)]
         private extern static void crf_learner_beginAddItemSequence_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemAttribute_name)]
         private extern static void crf_learner_beginAddItemAttribute_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addItemAttribute_name)]
         private extern static bool crf_learner_addItemAttribute_win_x64( IntPtr learnerWrapper, byte* name, double val );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemAttribute_name)]
         private extern static void crf_learner_endAddItemAttribute_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemSequence_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemSequence_name)]
         private extern static void crf_learner_endAddItemSequence_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddStringList_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddStringList_name)]
         private extern static void crf_learner_beginAddStringList_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addString_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addString_name)]
         private extern static bool crf_learner_addString_win_x64( IntPtr learnerWrapper, byte* name );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddStringList_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddStringList_name)]
         private extern static void crf_learner_endAddStringList_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_append_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_append_name)]
         private extern static bool crf_learner_append_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_train_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_train_name)]
         private extern static bool crf_learner_train_win_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_uninitialize_name )]
+        [DllImport(DLL_NAME_WINDOWS_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_uninitialize_name)]
         private extern static void crf_learner_uninitialize_win_x64( IntPtr learnerWrapper );
         */
         #endregion
@@ -247,109 +251,109 @@ namespace lingvo.crfsuite
         #endregion
 
         #region [.x86.]
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
-        private extern static IntPtr crf_tagger_initialize_win_x86(IntPtr/*string*/ name);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_initialize_name)]
+        private extern static IntPtr crf_tagger_initialize_win_x86( IntPtr/*string*/ name );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
-        private extern static void crf_tagger_beginAddItemSequence_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemSequence_name)]
+        private extern static void crf_tagger_beginAddItemSequence_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
-        private extern static void crf_tagger_beginAddItemAttribute_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemAttribute_name)]
+        private extern static void crf_tagger_beginAddItemAttribute_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
-        private extern static bool crf_tagger_addItemAttribute_win_x86(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttribute_name)]
+        private extern static bool crf_tagger_addItemAttribute_win_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttributeNameOnly_name)]
         private extern static void crf_tagger_addItemAttributeNameOnly_win_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
-        private extern static void crf_tagger_endAddItemAttribute_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemAttribute_name)]
+        private extern static void crf_tagger_endAddItemAttribute_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
-        private extern static void crf_tagger_endAddItemSequence_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemSequence_name)]
+        private extern static void crf_tagger_endAddItemSequence_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
-        private extern static void crf_tagger_tag_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_name)]
+        private extern static void crf_tagger_tag_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_marginal_name)]
         private extern static double crf_tagger_tag_with_marginal_win_x86( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
-        private extern static uint crf_tagger_getResultLength_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultLength_name)]
+        private extern static uint crf_tagger_getResultLength_win_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
-        private extern static IntPtr crf_tagger_getResultValue_win_x86(IntPtr taggerWrapper, uint index);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultValue_name)]
+        private extern static IntPtr crf_tagger_getResultValue_win_x86( IntPtr taggerWrapper, uint index );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultMarginal_name)]
         private extern static double crf_tagger_getResultMarginal_win_x86( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
-        private extern static void crf_tagger_uninitialize_win_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_uninitialize_name)]
+        private extern static void crf_tagger_uninitialize_win_x86( IntPtr taggerWrapper );
 
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_initialize_name)]
         private extern static IntPtr crf_tagger_ma_initialize_win_x86( IntPtr name );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_beginAddNgramSequence_name)]
         private extern static void crf_tagger_ma_beginAddNgramSequence_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_addNgramSequence_name)]
         private extern static void crf_tagger_ma_addNgramSequence_win_x86( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_endAddNgramSequence_name)]
         private extern static void crf_tagger_ma_endAddNgramSequence_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_setNgramValue_name)]
         private extern static void crf_tagger_ma_setNgramValue_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_tagNgram_with_probability_name)]
         private extern static double crf_tagger_ma_tagNgram_with_probability_win_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_getResultValue_name)]
         private extern static IntPtr crf_tagger_ma_getResultValue_win_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_WIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport(DLL_WIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_uninitialize_name)]
         private extern static void crf_tagger_ma_uninitialize_win_x86( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
         /*
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_initialize_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_initialize_name)]
         private extern static IntPtr crf_learner_initialize_win_x86( IntPtr modelFilename, AlgorithmEnum algorithmEnum );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemSequence_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemSequence_name)]
         private extern static void crf_learner_beginAddItemSequence_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemAttribute_name)]
         private extern static void crf_learner_beginAddItemAttribute_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addItemAttribute_name)]
         private extern static bool crf_learner_addItemAttribute_win_x86( IntPtr learnerWrapper, byte* name, double val );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemAttribute_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemAttribute_name)]
         private extern static void crf_learner_endAddItemAttribute_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemSequence_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemSequence_name)]
         private extern static void crf_learner_endAddItemSequence_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddStringList_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddStringList_name)]
         private extern static void crf_learner_beginAddStringList_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addString_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addString_name)]
         private extern static bool crf_learner_addString_win_x86( IntPtr learnerWrapper, byte* name );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddStringList_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddStringList_name)]
         private extern static void crf_learner_endAddStringList_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_append_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_append_name)]
         private extern static bool crf_learner_append_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_train_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_train_name)]
         private extern static bool crf_learner_train_win_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_WINDOWS_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_uninitialize_name )]
+        [DllImport(DLL_NAME_WINDOWS_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_uninitialize_name)]
         private extern static void crf_learner_uninitialize_win_x86( IntPtr learnerWrapper );
         */
         #endregion
@@ -359,109 +363,109 @@ namespace lingvo.crfsuite
 
         #region [.linux.]
         #region [.x64.]
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
-        private extern static IntPtr crf_tagger_initialize_lin_x64(IntPtr/*string*/ name);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_initialize_name)]
+        private extern static IntPtr crf_tagger_initialize_lin_x64( IntPtr/*string*/ name );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
-        private extern static void crf_tagger_beginAddItemSequence_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemSequence_name)]
+        private extern static void crf_tagger_beginAddItemSequence_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
-        private extern static void crf_tagger_beginAddItemAttribute_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemAttribute_name)]
+        private extern static void crf_tagger_beginAddItemAttribute_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
-        private extern static bool crf_tagger_addItemAttribute_lin_x64(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttribute_name)]
+        private extern static bool crf_tagger_addItemAttribute_lin_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttributeNameOnly_name)]
         private extern static void crf_tagger_addItemAttributeNameOnly_lin_x64( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
-        private extern static void crf_tagger_endAddItemAttribute_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemAttribute_name)]
+        private extern static void crf_tagger_endAddItemAttribute_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
-        private extern static void crf_tagger_endAddItemSequence_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemSequence_name)]
+        private extern static void crf_tagger_endAddItemSequence_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
-        private extern static void crf_tagger_tag_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_name)]
+        private extern static void crf_tagger_tag_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name)]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_marginal_name)]
         private extern static double crf_tagger_tag_with_marginal_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
-        private extern static uint crf_tagger_getResultLength_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultLength_name)]
+        private extern static uint crf_tagger_getResultLength_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
-        private extern static IntPtr crf_tagger_getResultValue_lin_x64(IntPtr taggerWrapper, uint index);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultValue_name)]
+        private extern static IntPtr crf_tagger_getResultValue_lin_x64( IntPtr taggerWrapper, uint index);
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultMarginal_name)]
         private extern static double crf_tagger_getResultMarginal_lin_x64( IntPtr taggerWrapper, uint index );        
 
-        [DllImport(DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
-        private extern static void crf_tagger_uninitialize_lin_x64(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_uninitialize_name)]
+        private extern static void crf_tagger_uninitialize_lin_x64( IntPtr taggerWrapper );
 
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_initialize_name)]
         private extern static IntPtr crf_tagger_ma_initialize_lin_x64( IntPtr name );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_beginAddNgramSequence_name)]
         private extern static void crf_tagger_ma_beginAddNgramSequence_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_addNgramSequence_name)]
         private extern static void crf_tagger_ma_addNgramSequence_lin_x64( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_endAddNgramSequence_name)]
         private extern static void crf_tagger_ma_endAddNgramSequence_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_setNgramValue_name)]
         private extern static void crf_tagger_ma_setNgramValue_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_tagNgram_with_probability_name)]
         private extern static double crf_tagger_ma_tagNgram_with_probability_lin_x64( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_getResultValue_name)]
         private extern static IntPtr crf_tagger_ma_getResultValue_lin_x64( IntPtr taggerWrapper );
 
-        [DllImport( DLL_LIN_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport(DLL_LIN_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_uninitialize_name)]
         private extern static void crf_tagger_ma_uninitialize_lin_x64( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
         /*
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_initialize_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_initialize_name)]
         private extern static IntPtr crf_learner_initialize_lin_x64( IntPtr modelFilename, AlgorithmEnum algorithmEnum );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemSequence_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemSequence_name)]
         private extern static void crf_learner_beginAddItemSequence_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemAttribute_name)]
         private extern static void crf_learner_beginAddItemAttribute_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addItemAttribute_name)]
         private extern static bool crf_learner_addItemAttribute_lin_x64( IntPtr learnerWrapper, byte* name, double val );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemAttribute_name)]
         private extern static void crf_learner_endAddItemAttribute_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemSequence_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemSequence_name)]
         private extern static void crf_learner_endAddItemSequence_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddStringList_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddStringList_name)]
         private extern static void crf_learner_beginAddStringList_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addString_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addString_name)]
         private extern static bool crf_learner_addString_lin_x64( IntPtr learnerWrapper, byte* name );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddStringList_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddStringList_name)]
         private extern static void crf_learner_endAddStringList_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_append_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_append_name)]
         private extern static bool crf_learner_append_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_train_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_train_name)]
         private extern static bool crf_learner_train_lin_x64( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x64, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_uninitialize_name )]
+        [DllImport(DLL_NAME_LINUX_x64, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_uninitialize_name)]
         private extern static void crf_learner_uninitialize_lin_x64( IntPtr learnerWrapper );
         */
         #endregion
@@ -469,109 +473,109 @@ namespace lingvo.crfsuite
         #endregion
 
         #region [.x86.]
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_initialize_name)]
-        private extern static IntPtr crf_tagger_initialize_lin_x86(IntPtr/*string*/ name);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_initialize_name)]
+        private extern static IntPtr crf_tagger_initialize_lin_x86( IntPtr/*string*/ name );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemSequence_name)]
-        private extern static void crf_tagger_beginAddItemSequence_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemSequence_name)]
+        private extern static void crf_tagger_beginAddItemSequence_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_beginAddItemAttribute_name)]
-        private extern static void crf_tagger_beginAddItemAttribute_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_beginAddItemAttribute_name)]
+        private extern static void crf_tagger_beginAddItemAttribute_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttribute_name)]
-        private extern static bool crf_tagger_addItemAttribute_lin_x86(IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttribute_name)]
+        private extern static bool crf_tagger_addItemAttribute_lin_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name, double val );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_addItemAttributeNameOnly_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_addItemAttributeNameOnly_name)]
         private extern static void crf_tagger_addItemAttributeNameOnly_lin_x86( IntPtr taggerWrapper, byte*/*IntPtr*/ name );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemAttribute_name)]
-        private extern static void crf_tagger_endAddItemAttribute_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemAttribute_name)]
+        private extern static void crf_tagger_endAddItemAttribute_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_endAddItemSequence_name)]
-        private extern static void crf_tagger_endAddItemSequence_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_endAddItemSequence_name)]
+        private extern static void crf_tagger_endAddItemSequence_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_name)]
-        private extern static void crf_tagger_tag_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_name)]
+        private extern static void crf_tagger_tag_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_probability_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_probability_name)]
         private extern static double crf_tagger_tag_with_probability_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_tag_with_marginal_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_tag_with_marginal_name)]
         private extern static double crf_tagger_tag_with_marginal_lin_x86( IntPtr taggerWrapper );  
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultLength_name)]
-        private extern static uint crf_tagger_getResultLength_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultLength_name)]
+        private extern static uint crf_tagger_getResultLength_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultValue_name)]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultValue_name)]
         private extern static IntPtr crf_tagger_getResultValue_lin_x86( IntPtr taggerWrapper, uint index );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_getResultMarginal_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_getResultMarginal_name)]
         private extern static double crf_tagger_getResultMarginal_lin_x86( IntPtr taggerWrapper, uint index ); 
 
-        [DllImport(DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_uninitialize_name)]
-        private extern static void crf_tagger_uninitialize_lin_x86(IntPtr taggerWrapper);
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_uninitialize_name)]
+        private extern static void crf_tagger_uninitialize_lin_x86( IntPtr taggerWrapper );
 
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_initialize_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_initialize_name)]
         private extern static IntPtr crf_tagger_ma_initialize_lin_x86( IntPtr name );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_beginAddNgramSequence_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_beginAddNgramSequence_name)]
         private extern static void crf_tagger_ma_beginAddNgramSequence_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_addNgramSequence_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_addNgramSequence_name)]
         private extern static void crf_tagger_ma_addNgramSequence_lin_x86( IntPtr taggerWrapper, byte* ngram );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_endAddNgramSequence_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_endAddNgramSequence_name)]
         private extern static void crf_tagger_ma_endAddNgramSequence_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_setNgramValue_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_setNgramValue_name)]
         private extern static void crf_tagger_ma_setNgramValue_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, int attrIndex, int attrValueIndex, byte* value );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_tagNgram_with_probability_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_tagNgram_with_probability_name)]
         private extern static double crf_tagger_ma_tagNgram_with_probability_lin_x86( IntPtr taggerWrapper, NgramTypeEnum ngramType, NgramOrderTypeEnum ngramOrderType );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_getResultValue_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_getResultValue_name)]
         private extern static IntPtr crf_tagger_ma_getResultValue_lin_x86( IntPtr taggerWrapper );
 
-        [DllImport( DLL_LIN_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_tagger_ma_uninitialize_name )]
+        [DllImport(DLL_LIN_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_tagger_ma_uninitialize_name)]
         private extern static void crf_tagger_ma_uninitialize_lin_x86( IntPtr taggerWrapper );
 
         #region [.learner. not used.]
         /*
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_initialize_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_initialize_name)]
         private extern static IntPtr crf_learner_initialize_lin_x86( IntPtr modelFilename, AlgorithmEnum algorithmEnum );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemSequence_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemSequence_name)]
         private extern static void crf_learner_beginAddItemSequence_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddItemAttribute_name)]
         private extern static void crf_learner_beginAddItemAttribute_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addItemAttribute_name)]
         private extern static bool crf_learner_addItemAttribute_lin_x86( IntPtr learnerWrapper, byte* name, double val );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemAttribute_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemAttribute_name)]
         private extern static void crf_learner_endAddItemAttribute_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddItemSequence_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddItemSequence_name)]
         private extern static void crf_learner_endAddItemSequence_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_beginAddStringList_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_beginAddStringList_name)]
         private extern static void crf_learner_beginAddStringList_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_addString_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_addString_name)]
         private extern static bool crf_learner_addString_lin_x86( IntPtr learnerWrapper, byte* name );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_endAddStringList_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_endAddStringList_name)]
         private extern static void crf_learner_endAddStringList_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_append_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_append_name)]
         private extern static bool crf_learner_append_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_train_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_train_name)]
         private extern static bool crf_learner_train_lin_x86( IntPtr learnerWrapper );
 
-        [DllImport( DLL_NAME_LINUX_x86, CallingConvention = CallingConvention.Cdecl, EntryPoint = crf_learner_uninitialize_name )]
+        [DllImport(DLL_NAME_LINUX_x86, CallingConvention=CC.Cdecl, EntryPoint=crf_learner_uninitialize_name)]
         private extern static void crf_learner_uninitialize_lin_x86( IntPtr learnerWrapper );
         */
         #endregion
@@ -579,44 +583,57 @@ namespace lingvo.crfsuite
         #endregion
         #endregion
 
-        public static crf_tagger_initialize_Delegate               crf_tagger_initialize { get; private set; }
-        public static crf_tagger_beginAddItemSequence_Delegate     crf_tagger_beginAddItemSequence { get; private set; }
-        public static crf_tagger_beginAddItemAttribute_Delegate    crf_tagger_beginAddItemAttribute { get; private set; }
-        public static crf_tagger_addItemAttribute_Delegate         crf_tagger_addItemAttribute { get; private set; }
-        public static crf_tagger_addItemAttributeNameOnly_Delegate crf_tagger_addItemAttributeNameOnly { get; private set; }
-        public static crf_tagger_endAddItemAttribute_Delegate      crf_tagger_endAddItemAttribute { get; private set; }
-        public static crf_tagger_endAddItemSequence_Delegate       crf_tagger_endAddItemSequence { get; private set; }
-        public static crf_tagger_tag_Delegate                      crf_tagger_tag { get; private set; }
-        public static crf_tagger_tag_with_probability_Delegate     crf_tagger_tag_with_probability { get; private set; }
-        public static crf_tagger_tag_with_marginal_Delegate        crf_tagger_tag_with_marginal { get; private set; }
-        public static crf_tagger_getResultLength_Delegate          crf_tagger_getResultLength { get; private set; }
-        public static crf_tagger_getResultValue_Delegate           crf_tagger_getResultValue { get; private set; }
-        public static crf_tagger_getResultMarginal_Delegate        crf_tagger_getResultMarginal { get; private set; }
-        public static crf_tagger_uninitialize_Delegate             crf_tagger_uninitialize { get; private set; }
+        public static bool _crf_tagger_initialize_( string modelFilename, out IntPtr tagger )
+        {
+            var ptr = Marshal.StringToHGlobalAnsi( modelFilename );
+            try
+            {
+                tagger = crf_tagger_initialize( ptr );
+            }
+            finally
+            {
+                Marshal.FreeHGlobal( ptr );
+            }
+            return (tagger !=  IntPtr.Zero);
+        }
+        public static crf_tagger_initialize_Delegate               crf_tagger_initialize               { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_beginAddItemSequence_Delegate     crf_tagger_beginAddItemSequence     { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_beginAddItemAttribute_Delegate    crf_tagger_beginAddItemAttribute    { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_addItemAttribute_Delegate         crf_tagger_addItemAttribute         { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_addItemAttributeNameOnly_Delegate crf_tagger_addItemAttributeNameOnly { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_endAddItemAttribute_Delegate      crf_tagger_endAddItemAttribute      { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_endAddItemSequence_Delegate       crf_tagger_endAddItemSequence       { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_tag_Delegate                      crf_tagger_tag                      { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_tag_with_probability_Delegate     crf_tagger_tag_with_probability     { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_tag_with_marginal_Delegate        crf_tagger_tag_with_marginal        { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_getResultLength_Delegate          crf_tagger_getResultLength          { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_getResultValue_Delegate           crf_tagger_getResultValue           { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_getResultMarginal_Delegate        crf_tagger_getResultMarginal        { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_uninitialize_Delegate             crf_tagger_uninitialize             { [M(O.AggressiveInlining)] get; private set; }
 
-        public static crf_tagger_ma_initialize_Delegate                crf_tagger_ma_initialize { get; private set; }
-        public static crf_tagger_ma_beginAddNgramSequence_Delegate     crf_tagger_ma_beginAddNgramSequence { get; private set; }
-        public static crf_tagger_ma_addNgramSequence_Delegate          crf_tagger_ma_addNgramSequence { get; private set; }
-        public static crf_tagger_ma_endAddNgramSequence_Delegate       crf_tagger_ma_endAddNgramSequence { get; private set; }
-        public static crf_tagger_ma_setNgramValue_Delegate             crf_tagger_ma_setNgramValue { get; private set; }
-        public static crf_tagger_ma_tagNgram_with_probability_Delegate crf_tagger_ma_tagNgram_with_probability { get; private set; }
-        public static crf_tagger_ma_getResultValue_Delegate            crf_tagger_ma_getResultValue { get; private set; }
-        public static crf_tagger_ma_uninitialize_Delegate              crf_tagger_ma_uninitialize { get; private set; }
+        public static crf_tagger_ma_initialize_Delegate                crf_tagger_ma_initialize                { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_beginAddNgramSequence_Delegate     crf_tagger_ma_beginAddNgramSequence     { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_addNgramSequence_Delegate          crf_tagger_ma_addNgramSequence          { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_endAddNgramSequence_Delegate       crf_tagger_ma_endAddNgramSequence       { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_setNgramValue_Delegate             crf_tagger_ma_setNgramValue             { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_tagNgram_with_probability_Delegate crf_tagger_ma_tagNgram_with_probability { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_getResultValue_Delegate            crf_tagger_ma_getResultValue            { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_tagger_ma_uninitialize_Delegate              crf_tagger_ma_uninitialize              { [M(O.AggressiveInlining)] get; private set; }
 
         #region [.learner. not used.]
         /*
-        public static crf_learner_initialize_Delegate            crf_learner_initialize;
-        public static crf_learner_beginAddItemSequence_Delegate  crf_learner_beginAddItemSequence;
-        public static crf_learner_beginAddItemAttribute_Delegate crf_learner_beginAddItemAttribute;
-        public static crf_learner_addItemAttribute_Delegate      crf_learner_addItemAttribute;
-        public static crf_learner_endAddItemAttribute_Delegate   crf_learner_endAddItemAttribute;
-        public static crf_learner_endAddItemSequence_Delegate    crf_learner_endAddItemSequence;
-        public static crf_learner_beginAddStringList_Delegate    crf_learner_beginAddStringList;
-        public static crf_learner_addString_Delegate             crf_learner_addString;
-        public static crf_learner_endAddStringList_Delegate      crf_learner_endAddStringList;
-        public static crf_learner_append_Delegate                crf_learner_append;
-        public static crf_learner_train_Delegate                 crf_learner_train;
-        public static crf_learner_uninitialize_Delegate          crf_learner_uninitialize;
+        public static crf_learner_initialize_Delegate            crf_learner_initialize            { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_beginAddItemSequence_Delegate  crf_learner_beginAddItemSequence  { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_beginAddItemAttribute_Delegate crf_learner_beginAddItemAttribute { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_addItemAttribute_Delegate      crf_learner_addItemAttribute      { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_endAddItemAttribute_Delegate   crf_learner_endAddItemAttribute   { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_endAddItemSequence_Delegate    crf_learner_endAddItemSequence    { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_beginAddStringList_Delegate    crf_learner_beginAddStringList    { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_addString_Delegate             crf_learner_addString             { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_endAddStringList_Delegate      crf_learner_endAddStringList      { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_append_Delegate                crf_learner_append                { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_train_Delegate                 crf_learner_train                 { [M(O.AggressiveInlining)] get; private set; }
+        public static crf_learner_uninitialize_Delegate          crf_learner_uninitialize          { [M(O.AggressiveInlining)] get; private set; }
         */
         #endregion
 
@@ -803,7 +820,7 @@ namespace lingvo.crfsuite
 		}
     }
 
-    #region commented
+    #region comm.
     /*
     /// <summary>
     /// 
@@ -820,27 +837,13 @@ namespace lingvo.crfsuite
     /// </summary>
     internal class DllLoaderWindows : IDllLoader 
     {
-        IntPtr IDllLoader.LoadLibrary( string fileName ) 
-        {
-            return LoadLibrary(fileName);
-        }
-        void IDllLoader.FreeLibrary( IntPtr handle ) 
-        {
-            FreeLibrary(handle);
-        }
-        IntPtr IDllLoader.GetProcAddress( IntPtr dllHandle, string name )
-        {
-            return GetProcAddress(dllHandle, name);
-        }
+        IntPtr IDllLoader.LoadLibrary( string fileName )  => LoadLibrary(fileName);
+        void IDllLoader.FreeLibrary( IntPtr handle ) => FreeLibrary(handle);
+        IntPtr IDllLoader.GetProcAddress( IntPtr dllHandle, string name ) => GetProcAddress(dllHandle, name);
 
-        [DllImport("kernel32")]
-        private static extern IntPtr LoadLibrary(string fileName);
-
-        [DllImport("kernel32.dll")]
-        private static extern int FreeLibrary(IntPtr handle);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetProcAddress (IntPtr handle, string procedureName);
+        [DllImport("kernel32.dll")] private static extern IntPtr LoadLibrary(string fileName);
+        [DllImport("kernel32.dll")] private static extern int    FreeLibrary( IntPtr handle);
+        [DllImport("kernel32.dll")] private static extern IntPtr GetProcAddress ( IntPtr handle, string procedureName);
     }
 
     /// <summary>
@@ -848,39 +851,24 @@ namespace lingvo.crfsuite
     /// </summary>
     internal class DllLoaderLinux : IDllLoader 
     {
-        IntPtr IDllLoader.LoadLibrary( string fileName ) 
-        {
-            return dlopen(fileName, RTLD_NOW);
-        }
-        void IDllLoader.FreeLibrary( IntPtr handle ) 
-        {
-            dlclose(handle);
-        }
+        IntPtr IDllLoader.LoadLibrary( string fileName )  => dlopen(fileName, RTLD_NOW);
+        void IDllLoader.FreeLibrary( IntPtr handle )  => dlclose(handle);
         IntPtr IDllLoader.GetProcAddress( IntPtr dllHandle, string name )
         {
             // clear previous errors if any
             dlerror();
             var res = dlsym(dllHandle, name);
             var errPtr = dlerror();
-            if (errPtr != IntPtr.Zero) {
-                throw new Exception("dlsym: " + Marshal.PtrToStringAnsi(errPtr));
-            }
+            if (errPtr != IntPtr.Zero)  throw (new Exception( $"dlsym: {Marshal.PtrToStringAnsi(errPtr)}" ));
             return res;
         }
 
         private const int RTLD_NOW = 2;
 
-        [DllImport("libdl.so")]
-        private static extern IntPtr dlopen(String fileName, int flags);
-        
-        [DllImport("libdl.so")]
-        private static extern IntPtr dlsym(IntPtr handle, String symbol);
-
-        [DllImport("libdl.so")]
-        private static extern int dlclose(IntPtr handle);
-
-        [DllImport("libdl.so")]
-        private static extern IntPtr dlerror();
+        [DllImport("libdl.so")] private static extern IntPtr dlopen(String fileName, int flags);
+        [DllImport("libdl.so")] private static extern IntPtr dlsym( IntPtr handle, String symbol);
+        [DllImport("libdl.so")] private static extern int dlclose( IntPtr handle);
+        [DllImport("libdl.so")] private static extern IntPtr dlerror();
     }
 
     //Separating Linux and Windows implementations in different classes ensures that CLR won't try to load Linux implementation on windows and vice versa.
@@ -896,14 +884,8 @@ namespace lingvo.crfsuite
             var p = (int)Environment.OSVersion.Platform;
             return (p == 4) || (p == 6) || (p == 128);
         }
-        private static bool Isx64()
-        {
-            return (IntPtr.Size == 8);
-        }
-        private static string GetNativeDLLPath()
-		{
-            return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty));
-		}
+        private static bool Isx64() => ( IntPtr.Size == 8);
+        private static string GetNativeDLLPath() => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
 
         private const string DLL_NAME_x64    = "crf_x64";
         private const string DLL_NAME_x86    = "crf_x86";

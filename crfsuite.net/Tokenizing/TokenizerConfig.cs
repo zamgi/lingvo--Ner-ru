@@ -9,13 +9,15 @@ using lingvo.postagger;
 using lingvo.sentsplitting;
 using lingvo.urls;
 
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
+
 namespace lingvo.tokenizing
 {
     /// <summary>
     /// 
     /// </summary>
-    [Flags]
-    public enum TokenizeMode
+    [Flags] public enum TokenizeMode
     {
         __UNKNOWN__ = 0x0,
 
@@ -34,10 +36,10 @@ namespace lingvo.tokenizing
 
             const string PARTICLE_THAT = "ТО";
             var hyphenChars = xlat.CHARTYPE_MAP
-                                  .Select( (ct, c) => Tuple.Create( ct, (char)c ) )
-                                  .Where( t => (t.Item1 & CharType.IsHyphen) == CharType.IsHyphen )
-                                  .Select( t => t.Item2 );
-            var particleThats = hyphenChars.Select( c => c + PARTICLE_THAT )
+                                  .Select( (ct, ch) => ( ct, ch: (char) ch ) )
+                                  .Where( t => (t.ct & CharType.IsHyphen) == CharType.IsHyphen )
+                                  .Select( t => t.ch );
+            var particleThats = hyphenChars.Select( ch => ch + PARTICLE_THAT )
                                            .ToArray();
             var particleThatLength = (PARTICLE_THAT.Length + 1);
             var particleThatExclusion = from xe in xdoc.Root.Element( "particle-that-exclusion-list" ).Elements()
@@ -45,18 +47,14 @@ namespace lingvo.tokenizing
                                           where particleThats.Any( _pt => _v.EndsWith( _pt ) )
                                           let v = _v.Substring( 0, _v.Length - particleThatLength ).Trim()                                        
                                           //let v = xe.Value.Trim().ToUpperInvariant().Replace( " ", string.Empty )
-                                          where !string.IsNullOrEmpty( v )
+                                          where !v.IsNullOrEmpty()
                                         from pt in particleThats
                                         select 
                                             (v + pt);
             ParticleThatExclusion = new HashSet< string >( particleThatExclusion );
         }
 
-        public HashSet< string > ParticleThatExclusion
-        {
-            get;
-            private set;
-        }
+        public HashSet< string > ParticleThatExclusion { [M(O.AggressiveInlining)] get; }
     }
 
     /// <summary>
@@ -64,43 +62,16 @@ namespace lingvo.tokenizing
     /// </summary>
     public sealed class TokenizerConfig
     {
-        public TokenizerConfig( string tokenizerResourcesXmlFilename )
-        {
-            Model = new TokenizerModel( tokenizerResourcesXmlFilename );
-        }
+        public TokenizerConfig( string tokenizerResourcesXmlFilename ) => Model = new TokenizerModel( tokenizerResourcesXmlFilename );
 
-        public SentSplitterConfig SentSplitterConfig
-        {
-            get;
-            set;
-        }
-        public TokenizerModel     Model
-        {
-            get;
-            set;
-        }
+        public SentSplitterConfig SentSplitterConfig { get; set; }
+        public TokenizerModel     Model              { get; set; }
 
-        public TokenizeMode     TokenizeMode
-        {
-            get;
-            set;
-        }
-        public LanguageTypeEnum LanguageType
-        {
-            get;
-            set;
-        }
+        public TokenizeMode     TokenizeMode { get; set; }
+        public LanguageTypeEnum LanguageType { get; set; }
 
-        public IPosTaggerInputTypeProcessorFactory PosTaggerInputTypeProcessorFactory
-        {
-            get;
-            set;
-        }
-        public INerInputTypeProcessorFactory       NerInputTypeProcessorFactory
-        {
-            get;
-            set;
-        }        
+        public IPosTaggerInputTypeProcessorFactory PosTaggerInputTypeProcessorFactory { get; set; }
+        public INerInputTypeProcessorFactory       NerInputTypeProcessorFactory       { get; set; }
     }
 
     /// <summary>
@@ -108,32 +79,11 @@ namespace lingvo.tokenizing
     /// </summary>
     public sealed class TokenizerConfig4NerModelBuilder
     {
-        public TokenizerConfig4NerModelBuilder( string tokenizerResourcesXmlFilename )
-        {
-            Model = new TokenizerModel( tokenizerResourcesXmlFilename );
-        }
+        public TokenizerConfig4NerModelBuilder( string tokenizerResourcesXmlFilename ) => Model = new TokenizerModel( tokenizerResourcesXmlFilename );
 
-        public UrlDetectorConfig UrlDetectorConfig
-        {
-            get;
-            set;
-        }
-        public TokenizerModel    Model
-        {
-            get;
-            private set;
-        }
-
-        public LanguageTypeEnum LanguageType
-        {
-            get;
-            set;
-        }
-
-        public INerInputTypeProcessorFactory NerInputTypeProcessorFactory
-        {
-            get;
-            set;
-        }        
+        public TokenizerModel    Model             { get; }
+        public UrlDetectorConfig UrlDetectorConfig { get; set; }
+        public LanguageTypeEnum  LanguageType      { get; set; }
+        public INerInputTypeProcessorFactory NerInputTypeProcessorFactory { get; set; }
     }
 }

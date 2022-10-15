@@ -8,6 +8,9 @@ using lingvo.postagger;
 using lingvo.sentsplitting;
 using lingvo.urls;
 
+using M = System.Runtime.CompilerServices.MethodImplAttribute;
+using O = System.Runtime.CompilerServices.MethodImplOptions;
+
 namespace lingvo.tokenizing
 {
     /// <summary>
@@ -18,8 +21,12 @@ namespace lingvo.tokenizing
         /// <summary>
         /// 
         /// </summary>
-        [Flags]
-        private enum CRFCharType : byte
+        public delegate void ProcessSentCallbackDelegate( List< word_t > words );
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Flags] private enum CRFCharType : byte
         {
             __UNDEFINE__                = 0x0,
 
@@ -35,102 +42,97 @@ namespace lingvo.tokenizing
         /// </summary>
         unsafe private sealed class UnsafeConst
         {
-            #region [.static & xlat table's.]
-            public  static readonly char*  MAX_PTR                          = (char*) (0xffffffffFFFFFFFF);
-            private const string           INCLUDE_INTERPRETE_AS_WHITESPACE = "¤¦§¶"; //"¥©¤¦§®¶€™<>";
-            private const char             DOT                              = '\u002E'; /* 0x2E, 46, '.' */
-            private static readonly char[] BETWEEN_LETTER_OR_DIGIT          = new char[] { 
-                                                                                        '\u0026', /* 0x26  , 38  , '&' */
-                                                                                        '\u0027', /* 0x27  , 39  , ''' */
-                                                                                        '\u002D', /* 0x2D  , 45  , '-' */
-                                                                                        '\u005F', /* 0x5F  , 95  , '_' */
-                                                                                        '\u00AD', /* 0xAD  , 173 , '­' */
-                                                                                        '\u055A', /* 0x55A , 1370, '՚' */
-                                                                                        '\u055B', /* 0x55B , 1371, '՛' */
-                                                                                        '\u055D', /* 0x55D , 1373, '՝' */
-                                                                                        '\u2012', /* 0x2012, 8210, '‒' */
-                                                                                        '\u2013', /* 0x2013, 8211, '–' */
-                                                                                        '\u2014', /* 0x2014, 8212, '—' */
-                                                                                        '\u2015', /* 0x2015, 8213, '―' */
-                                                                                        '\u2018', /* 0x2018, 8216, '‘' */
-                                                                                        '\u2019', /* 0x2019, 8217, '’' */
-                                                                                        '\u201B', /* 0x201B, 8219, '‛' */
-                                                                                      };
-            private static readonly char[] BETWEEN_LETTER_OR_DIGIT_EN       = new char[] { 
-                                                                                        '\u0026', /* 0x26  , 38  , '&' */
-                                                                                      //'\u0027', /* 0x27  , 39  , ''' */
-                                                                                        '\u002D', /* 0x2D  , 45  , '-' */
-                                                                                        '\u005F', /* 0x5F  , 95  , '_' */
-                                                                                        '\u00AD', /* 0xAD  , 173 , '­' */
-                                                                                      //'\u055A', /* 0x55A , 1370, '՚' */
-                                                                                      //'\u055B', /* 0x55B , 1371, '՛' */
-                                                                                      //'\u055D', /* 0x55D , 1373, '՝' */
-                                                                                        '\u2012', /* 0x2012, 8210, '‒' */
-                                                                                        '\u2013', /* 0x2013, 8211, '–' */
-                                                                                        '\u2014', /* 0x2014, 8212, '—' */
-                                                                                        '\u2015', /* 0x2015, 8213, '―' */
-                                                                                        '\u2018', /* 0x2018, 8216, '‘' */
-                                                                                      //'\u2019', /* 0x2019, 8217, '’' */
-                                                                                        '\u201B', /* 0x201B, 8219, '‛' */
-                                                                                      };
-            private static readonly char[] BETWEEN_DIGIT                 = new char[] { 
-                                                                                         '\u0022', /* 0x22   , 34   , '"'  */
-                                                                                         '\u002C', /* 0x2C   , 44   , ','  */
-                                                                                         '\u003A', /* 0x3A   , 58   , ':'  */
-                                                                                         '\u3003', /* 0x3003 , 12291, '〃' */
-                                                                                         //-ERROR-!!!-DOT, /* и  0x2E   , 46   , '.' - хотя это и так работает */
-                                                                                      };
-            private static readonly char[] TOKENIZE_DIFFERENT_SEPARATELY = new char[] {             
-                                                                                        '\u2012', /* 0x2012 , 8210 , '‒' */
-                                                                                        '\u2013', /* 0x2013 , 8211 , '–' */
-                                                                                        '\u2014', /* 0x2014 , 8212 , '—' */
-                                                                                        '\u2015', /* 0x2015 , 8213 , '―' */
-                                                                                        '\u2018', /* 0x2018 , 8216 , '‘' */
-                                                                                        '\u2019', /* 0x2019 , 8217 , '’' */
-                                                                                        '\u201B', /* 0x201B , 8219 , '‛' */
-                                                                                        '\u201C', /* 0x201C , 8220 , '“' */
-                                                                                        '\u201D', /* 0x201D , 8221 , '”' */
-                                                                                        '\u201E', /* 0x201E , 8222 , '„' */
-                                                                                        '\u201F', /* 0x201F , 8223 , '‟' */
-                                                                                        '\u2026', /* 0x2026 , 8230 , '…' */
-                                                                                        '\u0021', /* 0x21   , 33   , '!' */
-                                                                                        '\u0022', /* 0x22   , 34   , '"' */
-                                                                                        '\u0026', /* 0x26   , 38   , '&' */
-                                                                                        '\u0027', /* 0x27   , 39   , ''' */
-                                                                                        '\u0028', /* 0x28   , 40   , '(' */
-                                                                                        '\u0029', /* 0x29   , 41   , ')' */
-                                                                                        '\u002C', /* 0x2C   , 44   , ',' */
-                                                                                        '\u002D', /* 0x2D   , 45   , '-' */
-                                                                                        //DOT, //'\u002E', /* 0x2E   , 46   , '.' */
-                                                                                        '\u3003', /* 0x3003 , 12291, '〃' */
-                                                                                        '\u003A', /* 0x3A   , 58   , ':' */
-                                                                                        '\u003B', /* 0x3B   , 59   , ';' */
-                                                                                        '\u003F', /* 0x3F   , 63   , '?' */
-                                                                                        '\u055A', /* 0x55A  , 1370 , '՚' */
-                                                                                        '\u055B', /* 0x55B  , 1371 , '՛'  */
-                                                                                        '\u055D', /* 0x55D  , 1373 , '՝' */
-                                                                                        '\u005B', /* 0x5B   , 91   , '[' */
-                                                                                        '\u005D', /* 0x5D   , 93   , ']' */
-                                                                                        '\u005F', /* 0x5F   , 95   , '_' */
-                                                                                        '\u05F4', /* 0x5F4  , 1524 , '״' */
-                                                                                        '\u007B', /* 0x7B   , 123  , '{' */
-                                                                                        '\u007D', /* 0x7D   , 125  , '}' */
-                                                                                        '\u00A1', /* 0xA1   , 161  , '¡' */
-                                                                                        '\u00AB', /* 0xAB   , 171  , '«' */
-                                                                                        '\u00AD', /* 0xAD   , 173  , '­' */
-                                                                                        '\u00BB', /* 0xBB   , 187  , '»' */
-                                                                                        '\u00BF', /* 0xBF   , 191  , '¿' */
-                                                                                        '/',
-                                                                                        '¥', '©', '®', '€', '™', '°', '№', '$', '%',
-                                                                                        '<', '>',
-                                                                                      };
-            #endregion
+            public static readonly char* MAX_PTR = (char*) (0xffffffffFFFFFFFF);
 
             public readonly CRFCharType* _CRF_CHARTYPE_MAP;
-
             private UnsafeConst( LanguageTypeEnum languageType )
             {
-                //-1-//
+                #region [.defines.]
+                var INCLUDE_INTERPRETE_AS_WHITESPACE = "¤¦§¶"; //"¥©¤¦§®¶€™<>";
+                var DOT                              = '\u002E'; /* 0x2E, 46, '.' */
+                var BETWEEN_LETTER_OR_DIGIT          = new char[] { '\u0026', /* 0x26  , 38  , '&' */
+                                                                    '\u0027', /* 0x27  , 39  , ''' */
+                                                                    '\u002D', /* 0x2D  , 45  , '-' */
+                                                                    '\u005F', /* 0x5F  , 95  , '_' */
+                                                                    '\u00AD', /* 0xAD  , 173 , '­' */
+                                                                    '\u055A', /* 0x55A , 1370, '՚' */
+                                                                    '\u055B', /* 0x55B , 1371, '՛' */
+                                                                    '\u055D', /* 0x55D , 1373, '՝' */
+                                                                    '\u2012', /* 0x2012, 8210, '‒' */
+                                                                    '\u2013', /* 0x2013, 8211, '–' */
+                                                                    '\u2014', /* 0x2014, 8212, '—' */
+                                                                    '\u2015', /* 0x2015, 8213, '―' */
+                                                                    '\u2018', /* 0x2018, 8216, '‘' */
+                                                                    '\u2019', /* 0x2019, 8217, '’' */
+                                                                    '\u201B', /* 0x201B, 8219, '‛' */
+                                                                    };
+                var BETWEEN_LETTER_OR_DIGIT_EN       = new char[] { '\u0026', /* 0x26  , 38  , '&' */
+                                                                    //'\u0027', /* 0x27  , 39  , ''' */
+                                                                    '\u002D', /* 0x2D  , 45  , '-' */
+                                                                    '\u005F', /* 0x5F  , 95  , '_' */
+                                                                    '\u00AD', /* 0xAD  , 173 , '­' */
+                                                                    //'\u055A', /* 0x55A , 1370, '՚' */
+                                                                    //'\u055B', /* 0x55B , 1371, '՛' */
+                                                                    //'\u055D', /* 0x55D , 1373, '՝' */
+                                                                    '\u2012', /* 0x2012, 8210, '‒' */
+                                                                    '\u2013', /* 0x2013, 8211, '–' */
+                                                                    '\u2014', /* 0x2014, 8212, '—' */
+                                                                    '\u2015', /* 0x2015, 8213, '―' */
+                                                                    '\u2018', /* 0x2018, 8216, '‘' */
+                                                                    //'\u2019', /* 0x2019, 8217, '’' */
+                                                                    '\u201B', /* 0x201B, 8219, '‛' */
+                                                                    };
+                var BETWEEN_DIGIT                    = new char[] { '\u0022', /* 0x22   , 34   , '"'  */
+                                                                    '\u002C', /* 0x2C   , 44   , ','  */
+                                                                    '\u003A', /* 0x3A   , 58   , ':'  */
+                                                                    '\u3003', /* 0x3003 , 12291, '〃' */
+                                                                    //-ERROR-!!!-DOT, /* и  0x2E   , 46   , '.' - хотя это и так работает */
+                                                                  };
+                var TOKENIZE_DIFFERENT_SEPARATELY    = new char[] { '\u2012', /* 0x2012 , 8210 , '‒' */
+                                                                    '\u2013', /* 0x2013 , 8211 , '–' */
+                                                                    '\u2014', /* 0x2014 , 8212 , '—' */
+                                                                    '\u2015', /* 0x2015 , 8213 , '―' */
+                                                                    '\u2018', /* 0x2018 , 8216 , '‘' */
+                                                                    '\u2019', /* 0x2019 , 8217 , '’' */
+                                                                    '\u201B', /* 0x201B , 8219 , '‛' */
+                                                                    '\u201C', /* 0x201C , 8220 , '“' */
+                                                                    '\u201D', /* 0x201D , 8221 , '”' */
+                                                                    '\u201E', /* 0x201E , 8222 , '„' */
+                                                                    '\u201F', /* 0x201F , 8223 , '‟' */
+                                                                    '\u2026', /* 0x2026 , 8230 , '…' */
+                                                                    '\u0021', /* 0x21   , 33   , '!' */
+                                                                    '\u0022', /* 0x22   , 34   , '"' */
+                                                                    '\u0026', /* 0x26   , 38   , '&' */
+                                                                    '\u0027', /* 0x27   , 39   , ''' */
+                                                                    '\u0028', /* 0x28   , 40   , '(' */
+                                                                    '\u0029', /* 0x29   , 41   , ')' */
+                                                                    '\u002C', /* 0x2C   , 44   , ',' */
+                                                                    '\u002D', /* 0x2D   , 45   , '-' */
+                                                                    //DOT, //'\u002E', /* 0x2E   , 46   , '.' */
+                                                                    '\u3003', /* 0x3003 , 12291, '〃' */
+                                                                    '\u003A', /* 0x3A   , 58   , ':' */
+                                                                    '\u003B', /* 0x3B   , 59   , ';' */
+                                                                    '\u003F', /* 0x3F   , 63   , '?' */
+                                                                    '\u055A', /* 0x55A  , 1370 , '՚' */
+                                                                    '\u055B', /* 0x55B  , 1371 , '՛'  */
+                                                                    '\u055D', /* 0x55D  , 1373 , '՝' */
+                                                                    '\u005B', /* 0x5B   , 91   , '[' */
+                                                                    '\u005D', /* 0x5D   , 93   , ']' */
+                                                                    '\u005F', /* 0x5F   , 95   , '_' */
+                                                                    '\u05F4', /* 0x5F4  , 1524 , '״' */
+                                                                    '\u007B', /* 0x7B   , 123  , '{' */
+                                                                    '\u007D', /* 0x7D   , 125  , '}' */
+                                                                    '\u00A1', /* 0xA1   , 161  , '¡' */
+                                                                    '\u00AB', /* 0xAB   , 171  , '«' */
+                                                                    '\u00AD', /* 0xAD   , 173  , '­' */
+                                                                    '\u00BB', /* 0xBB   , 187  , '»' */
+                                                                    '\u00BF', /* 0xBF   , 191  , '¿' */
+                                                                    '/',
+                                                                    '¥', '©', '®', '€', '™', '°', '№', '$', '%',
+                                                                    '<', '>',
+                                                                    };
+                #endregion
+
                 var CRF_CHARTYPE_MAP = new byte/*CRFCharType*/[ char.MaxValue + 1 ];
                 fixed ( /*CRFCharType*/byte* cctm = CRF_CHARTYPE_MAP )        
                 {
@@ -193,12 +195,8 @@ namespace lingvo.tokenizing
                 _CRF_CHARTYPE_MAP = (CRFCharType*) CRF_CHARTYPE_MAP_GCHandle.AddrOfPinnedObject().ToPointer();
             }
 
-            //public static readonly UnsafeConst Inst = new UnsafeConst();
-
-            //private readonly static Lazy< UnsafeConst > _Inst_Ru = new Lazy< UnsafeConst >(
             private static UnsafeConst _Inst_Ru;
             private static UnsafeConst _Inst_En;
-
             public static UnsafeConst GetInstanceByLanguage( LanguageTypeEnum languageType )
             {
                 switch ( languageType )
@@ -232,6 +230,16 @@ namespace lingvo.tokenizing
             }
         }
 
+        #region [.cctor().]
+        private static CharType* _CTM;
+        private static char*     _UIM;
+        static Tokenizer()
+        {
+            _UIM = xlat_Unsafe.Inst._UPPER_INVARIANT_MAP;
+            _CTM = xlat_Unsafe.Inst._CHARTYPE_MAP;
+        }
+        #endregion
+
         #region [.private field's.]
         private const int DEFAULT_WORDSLIST_CAPACITY = 100;
         private const int DEFAULT_WORDTOUPPERBUFFER  = 100;
@@ -241,8 +249,7 @@ namespace lingvo.tokenizing
         private readonly IPosTaggerInputTypeProcessor _PosTaggerInputTypeProcessor;
         private readonly INerInputTypeProcessor       _NerInputTypeProcessor;        
         private readonly HashSet< string >            _ParticleThatExclusion;
-        private readonly CharType*                    _CTM;
-        private readonly char*                        _UIM;
+
         private readonly CRFCharType*                 _CCTM;
         //private readonly bool                       _Make_PosTagger;
         private char*                                 _BASE;
@@ -268,8 +275,6 @@ namespace lingvo.tokenizing
             _ParticleThatExclusion = config.Model.ParticleThatExclusion;
             _SentSplitterProcessSentCallback_Delegate = new SentSplitter.ProcessSentCallbackDelegate( SentSplitterProcessSentCallback );
 
-            _UIM  = xlat_Unsafe.Inst._UPPER_INVARIANT_MAP;
-            _CTM  = xlat_Unsafe.Inst._CHARTYPE_MAP;
             _CCTM = UnsafeConst.GetInstanceByLanguage( config.LanguageType )._CRF_CHARTYPE_MAP; //UnsafeConst.Inst._CRF_CHARTYPE_MAP;
 
             //--//
@@ -282,7 +287,7 @@ namespace lingvo.tokenizing
             }
             else
             {
-                _PosTaggerInputTypeProcessor = Dummy_PosTaggerInputTypeProcessor.Instance;
+                _PosTaggerInputTypeProcessor = Dummy_PosTaggerInputTypeProcessor.Inst;
             }
 
             if ( (config.TokenizeMode & TokenizeMode.Ner) == TokenizeMode.Ner )
@@ -292,31 +297,20 @@ namespace lingvo.tokenizing
             }
             else
             {
-                _NerInputTypeProcessor = Dummy_NerInputTypeProcessor.Instance;
+                _NerInputTypeProcessor = Dummy_NerInputTypeProcessor.Inst;
             }
         }
 
         private void ReAllocWordToUpperBuffer( int newBufferSize )
         {
-            DisposeNativeResources();
+            FreeWordToUpperBuffer();
 
             _WordToUpperBufferSize = newBufferSize;
             var wordToUpperBuffer  = new char[ _WordToUpperBufferSize ];
             _WordToUpperBufferGCHandle = GCHandle.Alloc( wordToUpperBuffer, GCHandleType.Pinned );
             _WordToUpperBufferPtrBase  = (char*) _WordToUpperBufferGCHandle.AddrOfPinnedObject().ToPointer();
         }
-
-        ~Tokenizer()
-        {
-            DisposeNativeResources();
-        }
-        public void Dispose()
-        {
-            DisposeNativeResources();
-
-            GC.SuppressFinalize( this );
-        }
-        private void DisposeNativeResources()
+        private void FreeWordToUpperBuffer()
         {
             if ( _WordToUpperBufferPtrBase != null )
             {
@@ -324,9 +318,20 @@ namespace lingvo.tokenizing
                 _WordToUpperBufferPtrBase = null;
             }
         }
-        #endregion
 
-        public delegate void ProcessSentCallbackDelegate( List< word_t > words );
+        ~Tokenizer() => DisposeNativeResources();
+        public void Dispose()
+        {
+            DisposeNativeResources();
+            GC.SuppressFinalize( this );
+        }
+        private void DisposeNativeResources()
+        {
+            FreeWordToUpperBuffer();
+            _SentSplitter?.Dispose();
+            _UrlDetector?.Dispose();
+        }
+        #endregion
 
         public void Run( string text, bool splitBySmiles, ProcessSentCallbackDelegate processSentCallback )
         {
@@ -741,7 +746,7 @@ namespace lingvo.tokenizing
             }
         }
 
-        private char* SkipNonLetterAndNonDigitToTheEnd()
+        [M(O.AggressiveInlining)] private char* SkipNonLetterAndNonDigitToTheEnd()
         {
             //need for NER-model-builder
             if ( _NotSkipNonLetterAndNonDigitToTheEnd )
@@ -776,7 +781,7 @@ namespace lingvo.tokenizing
             return (_StartPtr - 1);
         }
 
-        private bool IsBetweenLetterOrDigit()
+        [M(O.AggressiveInlining)] private bool IsBetweenLetterOrDigit()
         {
             if ( _Ptr <= _StartPtr )
                 return (false);
@@ -813,7 +818,7 @@ namespace lingvo.tokenizing
 
             return (true);
         }
-        private bool IsBetweenDigit()
+        [M(O.AggressiveInlining)] private bool IsBetweenDigit()
         {
             if ( _Ptr <= _StartPtr )
                 return (false);
@@ -846,7 +851,7 @@ namespace lingvo.tokenizing
 
             return (true);
         }
-        private bool IsUpperNextChar()
+        [M(O.AggressiveInlining)] private bool IsUpperNextChar()
         {
             var p = _Ptr + 1;
             var ch = default(char);
@@ -872,7 +877,7 @@ namespace lingvo.tokenizing
             return (true);
         }
 
-        private bool MergePunctuation( char begining_ch )
+        [M(O.AggressiveInlining)] private bool MergePunctuation( char begining_ch )
         {
             _Length = 1;
             _Ptr++;
@@ -923,30 +928,21 @@ namespace lingvo.tokenizing
 
         private Tokenizer( TokenizerConfig4NerModelBuilder config )
         {
-            config.UrlDetectorConfig.UrlExtractMode = UrlDetector.UrlExtractModeEnum.Position;
-
-            _UrlDetector           = new UrlDetector( config.UrlDetectorConfig );
+            _UrlDetector           = new UrlDetector( new UrlDetectorConfig() { Model = config.UrlDetectorConfig.Model, UrlExtractMode = UrlDetector.UrlExtractModeEnum.Position } );
             _BuildModelSent        = sent_t.CreateEmpty();
             _Words                 = new List< word_t >( DEFAULT_WORDSLIST_CAPACITY );
             _BuildModelWords       = new List< buildmodel_word_t >( DEFAULT_WORDSLIST_CAPACITY );
             _ParticleThatExclusion = config.Model.ParticleThatExclusion;
 
-            _UIM  = xlat_Unsafe.Inst._UPPER_INVARIANT_MAP;
-            _CTM  = xlat_Unsafe.Inst._CHARTYPE_MAP;
             _CCTM = UnsafeConst.GetInstanceByLanguage( config.LanguageType )._CRF_CHARTYPE_MAP; //UnsafeConst.Inst._CRF_CHARTYPE_MAP;
 
             //--//
             ReAllocWordToUpperBuffer( DEFAULT_WORDTOUPPERBUFFER );
 
-            _PosTaggerInputTypeProcessor = Dummy_PosTaggerInputTypeProcessor.Instance;
+            _PosTaggerInputTypeProcessor = Dummy_PosTaggerInputTypeProcessor.Inst;
             _NerInputTypeProcessor       = config.NerInputTypeProcessorFactory.CreateInstance();
         }
-
-        public static Tokenizer Create4NerModelBuilder( TokenizerConfig4NerModelBuilder config )
-        {
-            var tokenizer = new Tokenizer( config );
-            return (tokenizer);
-        }
+        public static Tokenizer Create4NerModelBuilder( TokenizerConfig4NerModelBuilder config ) => new Tokenizer( config );
 
         public List< buildmodel_word_t > run4ModelBuilder( 
                 string        partOfSentText, 

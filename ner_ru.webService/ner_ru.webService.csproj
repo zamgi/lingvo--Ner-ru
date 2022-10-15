@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+    <!--<RetainVMGarbageCollection>true</RetainVMGarbageCollection>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="5.0.15" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\captcha\captcha.csproj" />    
+    <ProjectReference Include="..\lingvo.core\lingvo.core.csproj" />
+    <ProjectReference Include="..\sent-splitting\sent-splitting.csproj" />
+    <ProjectReference Include="..\crfsuite.net\crfsuite.net.csproj" />
+    <ProjectReference Include="..\ner-crf\ner-crf.csproj" />    
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo ------------ copy native crfsuite_.dll ------------&#xD;&#xA;copy &quot;..\[lib]\crfsuite_x64.dll&quot; &quot;$(ProjectDir)\bin&quot;&#xD;&#xA;copy &quot;..\[lib]\crfsuite_x86.dll&quot; &quot;$(ProjectDir)\bin&quot;&#xD;&#xA;copy &quot;..\[lib]\libcrfsuite.so&quot; &quot;$(ProjectDir)\bin&quot;" />
+  </Target>
+
+</Project>
