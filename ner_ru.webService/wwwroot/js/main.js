@@ -12,12 +12,8 @@ $(document).ready(function () {
 '(На самом деле iPhone - это просто смартфон.)';
 
     var textOnChange = function () {
-        var _len = $('#text').val().length; 
-        var len = _len.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-        var $textLength = $('#textLength');
-        $textLength.html('длина текста: ' + len + ' символов');
-        if (MAX_INPUTTEXT_LENGTH < _len) $textLength.addClass('max-inputtext-length');
-        else                             $textLength.removeClass('max-inputtext-length');
+        let len = $('#text').val().length, len_txt = len.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        $('#textLength').toggleClass('max-inputtext-length', MAX_INPUTTEXT_LENGTH < len).html('length of text: ' + len_txt + ' characters');
     };
     var getText = function( $text ) {
         var text = trim_text( $text.val().toString() );
