@@ -32,10 +32,10 @@ namespace lingvo.ner.webService
         {
             services.AddControllers()
                     .AddCaptchaController()
-                    .AddJsonOptions( options =>
+                    .AddJsonOptions( opts =>
                     {
-                        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                        options.JsonSerializerOptions.Converters.Add( new JsonStringEnumConverter() );
+                        opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                        opts.JsonSerializerOptions.Converters.Add( new JsonStringEnumConverter() );
                     });
 
             services.Configure< IISServerOptions >( opts => opts.MaxRequestBodySize = int.MaxValue );
@@ -92,25 +92,21 @@ namespace lingvo.ner.webService
             {
                 var server    = app.ApplicationServices.GetRequiredService< IServer >();
                 var addresses = server.Features?.Get< IServerAddressesFeature >()?.Addresses;
-                var address   = addresses?.FirstOrDefault();
+                var address   = addresses?.FirstOrDefault( a => a.StartsWith( "https:" ) ) ?? addresses?.FirstOrDefault();
                 
                 if ( address == null )
                 {
                     var config = app.ApplicationServices.GetService< IConfiguration >();
                     address = config.GetSection( "Kestrel:Endpoints:Https:Url" ).Value ??
                               config.GetSection( "Kestrel:Endpoints:Http:Url"  ).Value;
-                    if ( address != null )
-                    {
-                        address = address.Replace( "/*:", "/localhost:" );
-                    }
                 }
-
-                //System.Console.WriteLine( $"[ADDRESS: {address ?? "NULL"}]" );
 
                 if ( address != null )
                 {
-                    using ( Process.Start( new ProcessStartInfo( address.TrimEnd('/') + "/index.html" ) { UseShellExecute = true } ) ) { };
-                }                
+                    address = address.Replace( "/*:", "/localhost:" );
+
+                    using ( Process.Start( new ProcessStartInfo( address.TrimEnd( '/' ) + INDEX_PAGE_PATH ) { UseShellExecute = true } ) ) { };
+                }
             }
             #endregion
         }
